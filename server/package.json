@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "pirate game server",
+  "main": "none",
+  "scripts": {
+    "start": "cd .. && cd client && yarn client",
+    "dev": "concurrently -n 'server,client' -c 'blue,green' \"nodemon server.js\" \" yarn start\"  "
+  },
+  "repository": "git+https://github.com/NicolasBeaulieuGagnon/pirate-game.git",
+  "keywords": [],
+  "author": "Nicolas Beaulieu-Gagnon <beaulieu_gagnon_nicolas@hotmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NicolasBeaulieuGagnon/pirate-game/issues"
+  },
+  "homepage": "https://github.com/NicolasBeaulieuGagnon/pirate-game#readme",
+  "dependencies": {
+    "concurrently": "^6.2.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.10",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12",
+    "uuid": "^8.3.2"
+  }
+}

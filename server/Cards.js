@@ -157,7 +157,7 @@ const eventCards = [
         },
         {
           name: "Spoil Food",
-          text: "One of the crew fancy's himself a cook and convices everyone to eat the spoiled... what ever it was.",
+          text: "One of the crew fancy's himself a cook and convices everyone to eat the spoiled remains... what ever it was.",
           gold: 0,
           moral: -10,
           health: -20,
@@ -659,3 +659,5 @@ const endCards = [
     image: "this will be where we put the image sprite for the card",
   },
 ];
+
+module.exports = { eventCards, endCards };
