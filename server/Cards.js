@@ -51,7 +51,7 @@ const eventCards = [
     },
     rightChoice: {
       text: "Give up a crew mate.",
-      gold: 20,
+      gold: 0,
       moral: -20,
       health: -30,
       energy: 0,
@@ -101,83 +101,193 @@ const eventCards = [
       items: [
         {
           name: "Keg of Rhum",
-          text: "As you pull the object over. Your crew grins from ear to ear! It is a great day to be a pirate!",
-          gold: 0,
-          moral: 30,
-          health: 10,
-          energy: 0,
+          description:
+            "As you pull the object over. Your crew grins from ear to ear! It is a great day to be a pirate!",
+          leftChoice: {
+            text: "Pirate's life for me!",
+            gold: 0,
+            moral: 30,
+            health: -10,
+            energy: -10,
+          },
+          rightChoice: {
+            text: "Pirate's life for me!",
+            gold: 0,
+            moral: 30,
+            health: -10,
+            energy: 0,
+          },
         },
         {
           name: "Box of Oranges",
-          text: "Vitamin C is nothing to scoff at. Everyone eats a few and feels much better. ",
-          gold: 0,
-          moral: 0,
-          health: 30,
-          energy: 20,
+          description:
+            "Vitamin C is nothing to scoff at. Everyone eats a few and feels much better. ",
+          leftChoice: {
+            text: "Yummy",
+            gold: 0,
+            moral: 0,
+            health: 30,
+            energy: 20,
+          },
+          rightChoice: {
+            text: "Yummy",
+            gold: 0,
+            moral: 0,
+            health: 30,
+            energy: 20,
+          },
         },
         {
           name: "Poutch of Gold",
-          text: "Faint clinging of the coins as you reel it in. This trip is already a success!",
-          gold: 20,
-          moral: 0,
-          health: 0,
-          energy: 0,
+          description:
+            "Faint clinging of the coins as you reel it in. This trip is already a success!",
+          leftChoice: {
+            text: "HAR HAR!",
+            gold: 20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "HAR HAR!",
+            gold: 20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
         },
         {
           name: "Letters",
-          text: "While opening the barrel, lost letters start pouring out. Too wet to read.",
-          gold: 0,
-          moral: 0,
-          health: 0,
-          energy: 0,
+          description:
+            "While opening the barrel, lost letters start pouring out. Too wet to read.",
+          leftChoice: {
+            text: "ok",
+            gold: 0,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "ok",
+            gold: 0,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
         },
         {
           name: "Clothes",
-          text: "A tightly closed box is pried open,showing leather clothes. The crew will sleep in the warmth tonight!",
-          gold: 0,
-          moral: 0,
-          health: 0,
-          energy: 30,
+          description:
+            "A tightly closed box is pried open, showing leather clothes. The crew will sleep in the warmth tonight!",
+          leftChoice: {
+            text: "finally, some warmth",
+            gold: 0,
+            moral: 0,
+            health: 0,
+            energy: 30,
+          },
+          rightChoice: {
+            text: "finally, some warmth",
+            gold: 0,
+            moral: 0,
+            health: 0,
+            energy: 30,
+          },
         },
         {
           name: "Cursed Skull",
-          text: "As you pry open the box a cold wind goes down your spine, your crew loose determination to carry on...",
-          gold: 0,
-          moral: -30,
-          health: 0,
-          energy: 0,
+          description:
+            "As you pry open the box a cold wind goes down your spine, your crew loose determination to carry on...",
+          leftChoice: {
+            text: "Spooky",
+            gold: 0,
+            moral: -30,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "Spooky",
+            gold: 0,
+            moral: -30,
+            health: 0,
+            energy: 0,
+          },
         },
         {
           name: "Music Box",
-          text: "Dripping with water but still managing to work, one crew mate spins it up and everyone has a little dance.",
-          gold: 0,
-          moral: 30,
-          health: 0,
-          energy: 0,
+          description:
+            "Dripping with water but still managing to work, one crew mate spins it up and everyone has a little dance.",
+          leftChoice: {
+            text: "*dances*",
+            gold: 0,
+            moral: 30,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "*dances*",
+            gold: 0,
+            moral: 30,
+            health: 0,
+            energy: 0,
+          },
         },
         {
           name: "Spoil Food",
-          text: "One of the crew fancy's himself a cook and convices everyone to eat the spoiled remains... what ever it was.",
-          gold: 0,
-          moral: -10,
-          health: -20,
-          energy: 0,
+          description:
+            "One of the crew fancy's himself a cook and convices everyone to eat the spoiled remains... what ever it was.",
+          leftChoice: {
+            text: "*pukes*",
+            gold: 0,
+            moral: -10,
+            health: -20,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "*pukes*",
+            gold: 0,
+            moral: -10,
+            health: -20,
+            energy: 0,
+          },
         },
         {
           name: "Sea Monkey",
-          text: "Once the box dropped on deck it breaks and spills with water, a Sea Monkey jumps at your gold poutch and leaps into the sea with it.",
-          gold: -20,
-          moral: 0,
-          health: 0,
-          energy: 0,
+          description:
+            "Once the box dropped on deck it breaks and spills with water, a Sea Monkey jumps at your gold poutch and leaps into the sea with it.",
+          leftChoice: {
+            text: "Oh no!",
+            gold: -20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "Oh no!",
+            gold: -20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
         },
         {
           name: "Fresh Wood",
-          text: "This must not of been floating for long! Let's use it to repair the ship!",
-          gold: 0,
-          moral: 0,
-          health: 10,
-          energy: 0,
+          description:
+            "This must not of been floating for long! Let's use it to repair the ship!",
+          leftChoice: {
+            text: "Fix it!",
+            gold: 0,
+            moral: 0,
+            health: 10,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "Fix it!",
+            gold: 0,
+            moral: 0,
+            health: 10,
+            energy: 0,
+          },
         },
       ],
     },
@@ -264,6 +374,7 @@ const eventCards = [
     },
     secondAction: {
       secondChoices: {
+        name: "Go on...",
         description:
           "The privateers listened for a few sentences and decided payement was still due.",
         leftChoice: {
@@ -612,6 +723,7 @@ const eventCards = [
 const endCards = [
   {
     name: "Empty Moral",
+    type: "moral",
     description:
       "With your crews moral at the complete floor, no one wants to paddle. No one wants to move.This is the end.",
     leftChoice: {
@@ -636,6 +748,7 @@ const endCards = [
   },
   {
     name: "Empty Ship Health",
+    type: "health",
     description:
       "Your ship has just took it's last hit. As a good Captain. You are sinking with your beloved.",
     leftChoice: {
@@ -648,6 +761,7 @@ const endCards = [
   },
   {
     name: "Empty Energy",
+    type: "energy",
     description:
       "As you try to shout at your crew orders. Your throat runs dry and your vision blurs. A loud 'thud' is heard, and you, the captain, never said an other word.",
     leftChoice: {
@@ -655,6 +769,19 @@ const endCards = [
     },
     rightChoice: {
       text: "walk towards the light",
+    },
+    image: "this will be where we put the image sprite for the card",
+  },
+  {
+    name: "Yaaarrr broke.",
+    type: "gold",
+    description:
+      " You've managed to loose your last gold coin! With no treasure, your crew turns on you and cuts your career short!",
+    leftChoice: {
+      text: "Me booty!",
+    },
+    rightChoice: {
+      text: "Me booty!",
     },
     image: "this will be where we put the image sprite for the card",
   },

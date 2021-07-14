@@ -3,24 +3,39 @@ import styled from "styled-components";
 
 import { StatsContext } from "./StatsContext";
 
-const Card = ({ card, getRandomCard }) => {
-  const { state, setState } = useContext(StatsContext);
-  const { name, description, leftChoice, rightChoice } = card;
+const Card = ({ card, getRandomCard, setSingleCard, hasLost, setHasLost }) => {
+  const { state, setState, initialState } = useContext(StatsContext);
+  const { name, description, leftChoice, rightChoice, secondAction } = card;
 
   const handleStatChanges = (choice) => {
-    const { gold, moral, health, energy } = choice;
+    if (hasLost) {
+      setSingleCard({});
+      setState(initialState);
+      alert("a new Game has started");
+      setHasLost(false);
+    } else {
+      const { gold, moral, health, energy } = choice;
 
-    setState({
-      gold: state.gold + gold,
-      moral: state.moral + moral,
-      health: state.health + health,
-      energy: state.energy + energy,
-    });
+      setState({
+        gold: state.gold + gold,
+        moral: state.moral + moral,
+        health: state.health + health,
+        energy: state.energy + energy,
+      });
 
-    if (choice.useSecondAction) {
-      console.log("need to work on second choice!");
+      if (choice.useSecondAction) {
+        if (secondAction.items) {
+          let randomNum = Math.round(
+            Math.random() * (secondAction.items.length - 1)
+          );
+          setSingleCard(secondAction.items[randomNum]);
+        } else if (secondAction.secondChoices) {
+          setSingleCard(secondAction.secondChoices);
+        }
+      } else {
+        getRandomCard();
+      }
     }
-    getRandomCard();
   };
 
   return (

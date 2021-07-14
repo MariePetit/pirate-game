@@ -3,30 +3,31 @@ import styled from "styled-components";
 
 import Card from "./Card";
 import { StatsContext } from "./StatsContext";
+import { CardContext } from "./CardContext";
 
 const RandomCard = () => {
-  const { state } = useContext(StatsContext);
-
-  const [eventCards, setEventCards] = useState([]);
+  const { state, hasLost, reasonForLost, setHasLost } =
+    useContext(StatsContext);
+  const { eventCards, endCards } = useContext(CardContext);
   const [singleCard, setSingleCard] = useState({});
 
   useEffect(() => {
-    fetch("/cards").then((res) => {
-      res.json().then(({ data }) => {
-        let createdCards = data.eventCards.filter((eventCard) => {
-          return eventCard.name !== "cardName";
-        });
-
-        setEventCards(createdCards);
+    if (hasLost) {
+      const lostCard = endCards.filter((card) => {
+        return card.type === reasonForLost;
       });
-    });
-  }, []);
+      setSingleCard(lostCard[0]);
+    }
+  }, [hasLost]);
 
   const getRandomCard = () => {
-    const randomNum = Math.round(Math.random() * eventCards.length - 1);
-
+    let randomNum = Math.round(Math.random() * (eventCards.length - 1));
+    if (singleCard?.name === eventCards[randomNum]?.name) {
+      randomNum = Math.round(Math.random() * eventCards.length);
+    }
     setSingleCard(eventCards[randomNum]);
   };
+
   return (
     <Wrapper>
       <StatsWrapper>
@@ -37,9 +38,24 @@ const RandomCard = () => {
       </StatsWrapper>
       <ContentWrapper>
         <NewCardButton onClick={getRandomCard}>New Card</NewCardButton>
-        {singleCard?.name && (
-          <Card getRandomCard={getRandomCard} card={singleCard} />
-        )}
+
+        {hasLost
+          ? singleCard?.name && (
+              <Card
+                getRandomCard={getRandomCard}
+                card={singleCard}
+                setSingleCard={setSingleCard}
+                hasLost={hasLost}
+                setHasLost={setHasLost}
+              />
+            )
+          : singleCard?.name && (
+              <Card
+                getRandomCard={getRandomCard}
+                card={singleCard}
+                setSingleCard={setSingleCard}
+              />
+            )}
       </ContentWrapper>
     </Wrapper>
   );
@@ -54,9 +70,8 @@ const Wrapper = styled.div`
 
 const StatsWrapper = styled.div`
   position: absolute;
-  left: 50%;
+  left: 20px;
   top: 50px;
-  transform: translate(-50%);
   display: flex;
   flex-direction: column;
 `;
@@ -77,10 +92,9 @@ const ContentWrapper = styled.div`
   padding: 30px;
   border: 1px solid gray;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   transition: 0.3s ease-in-out;
+  max-width: 700px;
+  top: 30%;
 `;
 
 const NewCardButton = styled.button`
