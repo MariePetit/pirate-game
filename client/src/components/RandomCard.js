@@ -47,10 +47,30 @@ const RandomCard = () => {
   return (
     <Wrapper>
       <StatsWrapper>
-        <StatsItem>Gold:{state.gold}</StatsItem>
-        <StatsItem>Moral:{state.moral}</StatsItem>
-        <StatsItem>Health:{state.health}</StatsItem>
-        <StatsItem>Energy:{state.energy}</StatsItem>
+        <StatsItem>
+          {/* :{state.gold} */}
+          <StatsQuantityBar color="rgb(201, 133, 44)" length={state.gold}>
+            Gold
+          </StatsQuantityBar>
+        </StatsItem>
+        <StatsItem>
+          {/* :{state.moral} */}
+          <StatsQuantityBar color="rgb(69, 133, 111)" length={state.moral}>
+            Moral
+          </StatsQuantityBar>
+        </StatsItem>
+        <StatsItem>
+          {/* :{state.health} */}
+          <StatsQuantityBar color="rgb(148, 17, 3)" length={state.health}>
+            Health
+          </StatsQuantityBar>
+        </StatsItem>
+        <StatsItem>
+          {/* :{state.energy} */}
+          <StatsQuantityBar color="rgb(186, 180, 0)" length={state.energy}>
+            Energy
+          </StatsQuantityBar>
+        </StatsItem>
       </StatsWrapper>
       <ContentWrapper>
         <NewCardButton onClick={getRandomCard}>New Card</NewCardButton>
@@ -77,6 +97,25 @@ const RandomCard = () => {
   );
 };
 
+const StatsQuantityBar = styled.div`
+  text-align: center;
+  padding-top: 5px;
+  color: rgb(232, 232, 232);
+  font-size: 15px;
+  overflow: hidden;
+  height: 25px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  background: ${({ color }) => {
+    return color;
+  }};
+  box-shadow: 0 0 20px 3px gray;
+  transition: 0.3s ease-in-out;
+  width: ${({ length }) => {
+    return Math.sign(length) === 1 ? `${length}px` : "0px";
+  }};
+`;
+
 const Wrapper = styled.div`
   position: relative;
   background: rgb(227, 216, 200);
@@ -93,6 +132,8 @@ const StatsWrapper = styled.div`
 `;
 
 const StatsItem = styled.div`
+  display: flex;
+  flex-direction: row;
   padding: 5px;
   font-weight: bold;
   font-size: 20px;

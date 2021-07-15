@@ -582,27 +582,6 @@ const eventCards = [
     image: "this will be where we put the image sprite for the card",
   },
   {
-    name: "Oranges!",
-    type: "oranges",
-    description:
-      "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
-    leftChoice: {
-      text: "Vitamns are important!",
-      gold: 0,
-      moral: 0,
-      health: +10,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "Vitamins are important!",
-      gold: 0,
-      moral: 0,
-      health: +10,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
     name: "cardName",
     description: "",
     leftChoice: {
