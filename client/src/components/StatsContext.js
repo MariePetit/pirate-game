@@ -12,6 +12,7 @@ const initialState = {
 export const StatsContext = createContext(null);
 
 export const StatsProvider = ({ children }) => {
+  const [scurvy, setScurvy] = useState(false);
   const [state, setState] = useState(initialState);
   const [hasLost, setHasLost] = useState(false);
   const [reasonForLost, setReasonForLost] = useState("");
@@ -34,6 +35,8 @@ export const StatsProvider = ({ children }) => {
         reasonForLost,
         setReasonForLost,
         initialState,
+        scurvy,
+        setScurvy,
       }}
     >
       {children}

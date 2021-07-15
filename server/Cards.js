@@ -120,6 +120,7 @@ const eventCards = [
         },
         {
           name: "Box of Oranges",
+          type: "oranges",
           description:
             "Vitamin C is nothing to scoff at. Everyone eats a few and feels much better. ",
           leftChoice: {
@@ -396,77 +397,207 @@ const eventCards = [
     image: "this will be where we put the image sprite for the card",
   },
   {
-    name: "cardName",
-    description: "",
+    name: "Davy Jones",
+    description:
+      "An old beaten up ship appears in the horizon... It seems to be roaming the sea since it's creation.",
     leftChoice: {
-      text: "",
+      text: "Leave as fast as the crew can row!",
       gold: 0,
       moral: 0,
       health: 0,
-      energy: 0,
+      energy: -30,
     },
     rightChoice: {
-      text: "",
+      text: "Stay put, frozen in fear.",
       gold: 0,
-      moral: 0,
+      moral: -30,
       health: 0,
       energy: 0,
     },
     image: "this will be where we put the image sprite for the card",
   },
   {
-    name: "cardName",
-    description: "",
+    name: "Soft Music",
+    description:
+      "a slight mist settles in and you start to hear a soft singing voice.",
     leftChoice: {
-      text: "",
+      text: "Investigate!",
+      gold: 0,
+      moral: 0,
+      health: 0,
+      energy: 0,
+      useSecondAction: true,
+    },
+    rightChoice: {
+      text: "stay on course.",
       gold: 0,
       moral: 0,
       health: 0,
       energy: 0,
     },
-    rightChoice: {
-      text: "",
+    secondAction: {
+      items: [
+        {
+          name: "Sirens",
+          description:
+            "as you get closer to the music, the fog clears and you notice you are in a sirens' nest. They start trying to drag your crew out of the ship!",
+          leftChoice: {
+            text: "Escape!!",
+            gold: 0,
+            moral: -20,
+            health: -40,
+            energy: -20,
+          },
+          rightChoice: {
+            text: "Escape!!",
+            gold: 0,
+            moral: -20,
+            health: -40,
+            energy: -20,
+          },
+        },
+        {
+          name: "Mermaids",
+          description:
+            "Your ship get's close to a single rock peaking out of the sea, you sea a beautiful mermaid and your eyes meet. The mermaid jumps and disappears in the ocean.",
+          leftChoice: {
+            text: "Smile at the rare sighting",
+            gold: 0,
+            moral: 20,
+            health: 0,
+            energy: 10,
+          },
+          rightChoice: {
+            text: "Smile at the rare sighting",
+            gold: 0,
+            moral: 20,
+            health: 0,
+            energy: 10,
+          },
+        },
+        {
+          name: "Manatees",
+          description:
+            "Your crew is all eager to see the rare mermaids, as you get closer, only giant sea cows are to be seen. You haven't been on land for a long time now.",
+          leftChoice: {
+            text: "Go back on course, dissapointed",
+            gold: 0,
+            moral: -20,
+            health: 0,
+            energy: -20,
+          },
+          rightChoice: {
+            text: "Go back on course, dissapointed",
+            gold: 0,
+            moral: -20,
+            health: 0,
+            energy: -20,
+          },
+        },
+      ],
+    },
+    image: "this will be where we put the image sprite for the card",
+  },
+  {
+    name: "Scurvy",
+    description:
+      "Your crew forgot to pack some oranges. After not being at sea for long, your crew now has scurvy! (each turn you will loose health until you find oranges)",
+    leftChoice: {
+      text: "aaarrrgggg",
       gold: 0,
       moral: 0,
-      health: 0,
+      health: -10,
+      energy: 0,
+    },
+    rightChoice: {
+      text: "aaaarrrggggg",
+      gold: 0,
+      moral: 0,
+      health: -10,
       energy: 0,
     },
     image: "this will be where we put the image sprite for the card",
   },
   {
-    name: "cardName",
-    description: "",
+    name: "Oranges!",
+    type: "oranges",
+    description:
+      "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
     leftChoice: {
-      text: "",
+      text: "Vitamns are important!",
       gold: 0,
       moral: 0,
-      health: 0,
+      health: +10,
       energy: 0,
     },
     rightChoice: {
-      text: "",
+      text: "Vitamins are important!",
       gold: 0,
       moral: 0,
-      health: 0,
+      health: +10,
       energy: 0,
     },
     image: "this will be where we put the image sprite for the card",
   },
   {
-    name: "cardName",
-    description: "",
+    name: "Oranges!",
+    type: "oranges",
+    description:
+      "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
     leftChoice: {
-      text: "",
+      text: "Vitamns are important!",
       gold: 0,
       moral: 0,
-      health: 0,
+      health: +10,
       energy: 0,
     },
     rightChoice: {
-      text: "",
+      text: "Vitamins are important!",
       gold: 0,
       moral: 0,
-      health: 0,
+      health: +10,
+      energy: 0,
+    },
+    image: "this will be where we put the image sprite for the card",
+  },
+  {
+    name: "Oranges!",
+    type: "oranges",
+    description:
+      "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
+    leftChoice: {
+      text: "Vitamns are important!",
+      gold: 0,
+      moral: 0,
+      health: +10,
+      energy: 0,
+    },
+    rightChoice: {
+      text: "Vitamins are important!",
+      gold: 0,
+      moral: 0,
+      health: +10,
+      energy: 0,
+    },
+    image: "this will be where we put the image sprite for the card",
+  },
+  {
+    name: "Oranges!",
+    type: "oranges",
+    description:
+      "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
+    leftChoice: {
+      text: "Vitamns are important!",
+      gold: 0,
+      moral: 0,
+      health: +10,
+      energy: 0,
+    },
+    rightChoice: {
+      text: "Vitamins are important!",
+      gold: 0,
+      moral: 0,
+      health: +10,
       energy: 0,
     },
     image: "this will be where we put the image sprite for the card",

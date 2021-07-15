@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { StatsContext } from "./StatsContext";
 
 const Card = ({ card, getRandomCard, setSingleCard, hasLost, setHasLost }) => {
-  const { state, setState, initialState } = useContext(StatsContext);
+  const { state, setState, scurvy, initialState } = useContext(StatsContext);
   const { name, description, leftChoice, rightChoice, secondAction } = card;
 
   const handleStatChanges = (choice) => {
@@ -15,13 +15,21 @@ const Card = ({ card, getRandomCard, setSingleCard, hasLost, setHasLost }) => {
       setHasLost(false);
     } else {
       const { gold, moral, health, energy } = choice;
-
-      setState({
-        gold: state.gold + gold,
-        moral: state.moral + moral,
-        health: state.health + health,
-        energy: state.energy + energy,
-      });
+      if (scurvy) {
+        setState({
+          gold: state.gold + gold,
+          moral: state.moral + moral,
+          health: state.health + health - 10,
+          energy: state.energy + energy,
+        });
+      } else {
+        setState({
+          gold: state.gold + gold,
+          moral: state.moral + moral,
+          health: state.health + health,
+          energy: state.energy + energy,
+        });
+      }
 
       if (choice.useSecondAction) {
         if (secondAction.items) {
