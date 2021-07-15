@@ -6,8 +6,15 @@ import { StatsContext } from "./StatsContext";
 import { CardContext } from "./CardContext";
 
 const RandomCard = () => {
-  const { state, hasLost, reasonForLost, setHasLost } =
-    useContext(StatsContext);
+  const {
+    state,
+    setState,
+    hasLost,
+    reasonForLost,
+    setHasLost,
+    scurvy,
+    setScurvy,
+  } = useContext(StatsContext);
   const { eventCards, endCards } = useContext(CardContext);
   const [singleCard, setSingleCard] = useState({});
 
@@ -17,6 +24,7 @@ const RandomCard = () => {
         return card.type === reasonForLost;
       });
       setSingleCard(lostCard[0]);
+      setScurvy(false);
     }
   }, [hasLost]);
 
@@ -24,6 +32,14 @@ const RandomCard = () => {
     let randomNum = Math.round(Math.random() * (eventCards.length - 1));
     if (singleCard?.name === eventCards[randomNum]?.name) {
       randomNum = Math.round(Math.random() * eventCards.length);
+    }
+
+    if (eventCards[randomNum]?.type?.toLowerCase() === "oranges") {
+      setScurvy(false);
+    }
+
+    if (eventCards[randomNum]?.name?.toLowerCase() === "scurvy") {
+      setScurvy(true);
     }
     setSingleCard(eventCards[randomNum]);
   };
