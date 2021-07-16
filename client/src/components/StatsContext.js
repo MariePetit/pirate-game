@@ -13,8 +13,9 @@ export const StatsContext = createContext(null);
 
 export const StatsProvider = ({ children }) => {
   const [scurvy, setScurvy] = useState(false);
-  const [state, setState] = useState(initialState);
   const [hasLost, setHasLost] = useState(false);
+  const [showChanges, setShowChanges] = useState("none");
+  const [state, setState] = useState(initialState);
   const [reasonForLost, setReasonForLost] = useState("");
 
   useEffect(() => {
@@ -37,6 +38,8 @@ export const StatsProvider = ({ children }) => {
         initialState,
         scurvy,
         setScurvy,
+        showChanges,
+        setShowChanges,
       }}
     >
       {children}
