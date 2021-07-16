@@ -3,15 +3,25 @@ import styled from "styled-components";
 
 import { StatsContext } from "./StatsContext";
 
-const Card = ({ card, getRandomCard, setSingleCard, hasLost, setHasLost }) => {
-  const { state, setState, scurvy, initialState } = useContext(StatsContext);
+const Card = ({
+  card,
+  getRandomCard,
+  setSingleCard,
+  hasLost,
+  setHasLost,
+  tick,
+  setTick,
+}) => {
+  const { state, setState, scurvy, initialState, showChanges, setShowChanges } =
+    useContext(StatsContext);
   const { name, description, leftChoice, rightChoice, secondAction } = card;
 
   const handleStatChanges = (choice) => {
     if (hasLost) {
       setSingleCard({});
       setState(initialState);
-      alert("a new Game has started");
+      alert(`You have survived ${tick} days. A new game will now begin...`);
+      setTick(0);
       setHasLost(false);
     } else {
       const { gold, moral, health, energy } = choice;
@@ -52,6 +62,12 @@ const Card = ({ card, getRandomCard, setSingleCard, hasLost, setHasLost }) => {
       <Description>~~{description}~~</Description>
       <ChoiceWrapper>
         <Choice
+          onMouseOut={() => {
+            setShowChanges("none");
+          }}
+          onMouseOver={() => {
+            setShowChanges("left");
+          }}
           onClick={() => {
             handleStatChanges(leftChoice);
           }}
@@ -59,6 +75,12 @@ const Card = ({ card, getRandomCard, setSingleCard, hasLost, setHasLost }) => {
           {leftChoice.text}
         </Choice>
         <Choice
+          onMouseOut={() => {
+            setShowChanges("none");
+          }}
+          onMouseOver={() => {
+            setShowChanges("right");
+          }}
           onClick={() => {
             handleStatChanges(rightChoice);
           }}
