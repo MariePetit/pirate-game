@@ -12,7 +12,7 @@ const Card = ({
   tick,
   setTick,
 }) => {
-  const { state, setState, scurvy, initialState, showChanges, setShowChanges } =
+  const { state, setState, scurvy, initialState, setShowChanges } =
     useContext(StatsContext);
   const { name, description, leftChoice, rightChoice, secondAction } = card;
 

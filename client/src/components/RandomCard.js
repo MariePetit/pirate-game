@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 
 import Card from "./Card";
+import StatDisplay from "./StatDisplay";
 import { StatsContext } from "./StatsContext";
 import { CardContext } from "./CardContext";
 
@@ -9,15 +10,8 @@ const RandomCard = () => {
   const [singleCard, setSingleCard] = useState({});
   const [tick, setTick] = useState(0);
 
-  const {
-    state,
-    hasLost,
-    reasonForLost,
-    setHasLost,
-    setScurvy,
-    showChanges,
-    setShowChanges,
-  } = useContext(StatsContext);
+  const { state, hasLost, reasonForLost, setHasLost, setScurvy, showChanges } =
+    useContext(StatsContext);
   const { eventCards, endCards } = useContext(CardContext);
 
   useEffect(() => {
@@ -50,88 +44,30 @@ const RandomCard = () => {
     <Wrapper>
       <StatsWrapper>
         <StatsItem>Day: {tick}</StatsItem>
-        <StatsItem>
-          {/* :{state.gold} */}
-          <StatsQuantityBar color="rgb(201, 133, 44)" length={state.gold}>
-            Gold
-          </StatsQuantityBar>
-          {showChanges === "left" ? (
-            <Amount
-              color={Math.sign(singleCard.leftChoice?.gold)}
-              size={singleCard.leftChoice?.gold?.toString().replace("-", "")}
+        {singleCard && (
+          <>
+            <StatDisplay
+              singleCard={singleCard}
+              type="Gold"
+              color="rgb(201, 133, 44)"
+            />{" "}
+            <StatDisplay
+              singleCard={singleCard}
+              type="Moral"
+              color="rgb(69, 133, 111)"
+            />{" "}
+            <StatDisplay
+              singleCard={singleCard}
+              type="Health"
+              color="rgb(148, 17, 3)"
+            />{" "}
+            <StatDisplay
+              singleCard={singleCard}
+              type="Energy"
+              color="rgb(186, 180, 0)"
             />
-          ) : (
-            showChanges === "right" && (
-              <Amount
-                color={Math.sign(singleCard.rightChoice?.gold)}
-                size={singleCard.rightChoice?.gold?.toString().replace("-", "")}
-              />
-            )
-          )}
-        </StatsItem>
-        <StatsItem>
-          {/* :{state.moral} */}
-          <StatsQuantityBar color="rgb(69, 133, 111)" length={state.moral}>
-            Moral
-          </StatsQuantityBar>
-          {showChanges === "left" ? (
-            <Amount
-              color={Math.sign(singleCard.leftChoice?.moral)}
-              size={singleCard.leftChoice?.moral?.toString().replace("-", "")}
-            />
-          ) : (
-            showChanges === "right" && (
-              <Amount
-                color={Math.sign(singleCard.rightChoice?.moral)}
-                size={singleCard.rightChoice?.moral
-                  ?.toString()
-                  .replace("-", "")}
-              />
-            )
-          )}
-        </StatsItem>
-        <StatsItem>
-          {/* :{state.health} */}
-          <StatsQuantityBar color="rgb(148, 17, 3)" length={state.health}>
-            Health
-          </StatsQuantityBar>
-          {showChanges === "left" ? (
-            <Amount
-              color={Math.sign(singleCard.leftChoice?.health)}
-              size={singleCard.leftChoice?.health?.toString().replace("-", "")}
-            />
-          ) : (
-            showChanges === "right" && (
-              <Amount
-                color={Math.sign(singleCard.rightChoice?.health)}
-                size={singleCard.rightChoice?.health
-                  ?.toString()
-                  .replace("-", "")}
-              />
-            )
-          )}
-        </StatsItem>
-        <StatsItem>
-          {/* :{state.energy} */}
-          <StatsQuantityBar color="rgb(186, 180, 0)" length={state.energy}>
-            Energy
-          </StatsQuantityBar>
-          {showChanges === "left" ? (
-            <Amount
-              color={Math.sign(singleCard.leftChoice?.energy)}
-              size={singleCard.leftChoice?.energy?.toString().replace("-", "")}
-            />
-          ) : (
-            showChanges === "right" && (
-              <Amount
-                color={Math.sign(singleCard.rightChoice?.energy)}
-                size={singleCard.rightChoice?.energy
-                  ?.toString()
-                  .replace("-", "")}
-              />
-            )
-          )}
-        </StatsItem>
+          </>
+        )}
       </StatsWrapper>
       <ContentWrapper>
         <NewCardButton onClick={getRandomCard}>New Card</NewCardButton>
@@ -160,34 +96,6 @@ const RandomCard = () => {
   );
 };
 
-const Amount = styled.div`
-  width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
-  border-radius: 50px;
-  margin-left: 5px;
-  background: ${({ color }) =>
-    color !== NaN && color === 1 ? "green" : "red"};
-`;
-
-const StatsQuantityBar = styled.div`
-  text-align: center;
-  padding-top: 5px;
-  color: rgb(232, 232, 232);
-  font-size: 15px;
-  overflow: hidden;
-  height: 25px;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-  background: ${({ color }) => {
-    return color;
-  }};
-  box-shadow: 0 0 20px 3px gray;
-  transition: 0.3s ease-in-out;
-  width: ${({ length }) => {
-    return Math.sign(length) === 1 ? `${length}px` : "0px";
-  }};
-`;
-
 const Wrapper = styled.div`
   position: relative;
   background: rgb(227, 216, 200);
@@ -199,7 +107,6 @@ const StatsWrapper = styled.div`
   position: absolute;
   left: 20px;
   top: 50px;
-  display: flex;
   flex-direction: column;
 `;
 
