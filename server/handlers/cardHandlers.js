@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 
-const { eventCards, endCards } = require("../Cards");
+const { eventCards, endCards, SpecialCasesCards } = require("../Cards");
 
 const getAllCards = (req, res) => {
   const newEventCards = eventCards.map((card) => {
@@ -13,7 +13,11 @@ const getAllCards = (req, res) => {
 
   res.status(200).json({
     status: 200,
-    data: { eventCards: newEventCards, endCards: newEndCards },
+    data: {
+      eventCards: newEventCards,
+      endCards: newEndCards,
+      SpecialCasesCards,
+    },
     message: "grabbed all cards",
   });
 };
