@@ -14,12 +14,13 @@ const StatDisplay = ({
       <Stat color={color} length={state[type?.toLowerCase()]}>
         {type}
       </Stat>
-      {showChanges === "left" ? (
+      {leftChoice && showChanges === "left" ? (
         <HoverChange
           color={Math.sign(leftChoice[type?.toLowerCase()])}
           size={leftChoice[type?.toLowerCase()]?.toString().replace("-", "")}
         />
       ) : (
+        leftChoice &&
         showChanges === "right" && (
           <HoverChange
             color={Math.sign(rightChoice[type?.toLowerCase()])}
