@@ -12,11 +12,17 @@ const Card = ({
   tick,
   setTick,
 }) => {
-  const { state, setState, scurvy, initialState, showChanges, setShowChanges } =
+  const { state, setState, scurvy, initialState, setShowChanges } =
     useContext(StatsContext);
   const { name, description, leftChoice, rightChoice, secondAction } = card;
 
   const handleStatChanges = (choice) => {
+    const leftButton = document.getElementById("leftButton");
+    const rightButton = document.getElementById("rightButton");
+
+    leftButton.blur();
+    rightButton.blur();
+
     if (hasLost) {
       setSingleCard({});
       setState(initialState);
@@ -62,6 +68,7 @@ const Card = ({
       <Description>~~{description}~~</Description>
       <ChoiceWrapper>
         <Choice
+          id="leftButton"
           onMouseOut={() => {
             setShowChanges("none");
           }}
@@ -75,6 +82,7 @@ const Card = ({
           {leftChoice.text}
         </Choice>
         <Choice
+          id="rightButton"
           onMouseOut={() => {
             setShowChanges("none");
           }}
