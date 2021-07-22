@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const { v4: uuidv4 } = require("uuid");
 const assert = require("assert");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -30,6 +31,7 @@ const AddNewPirate = async (req, res) => {
     // small check to see if the pirates in the pirates Array are all dead.
     if (user.pirates.every((pirate) => pirate.isDead === true)) {
       const newPirate = {
+        pirateId: uuidv4(),
         name: `${name ? name : randomPirateName()}`,
         avatarSrc: `randomPic`,
         treasureMaps: [],

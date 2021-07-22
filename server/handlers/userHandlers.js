@@ -107,7 +107,7 @@ const AccountRecovery = async (req, res) => {
 };
 
 const CreateUser = async (req, res) => {
-  const { firstName, lastName, email, username, password, avatarSrc } =
+  const { firstName, lastName, email, userName, password, avatarSrc } =
     req.body;
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
@@ -119,6 +119,7 @@ const CreateUser = async (req, res) => {
     const friends = [];
     const pirates = [];
     const pirate = {
+      pirateId: uuidv4(),
       name: req.body.pirateName ? req.body.pirateName : randomPirateName(),
       avatarSrc: "",
       treasureMaps: [],
@@ -141,7 +142,7 @@ const CreateUser = async (req, res) => {
       firstName,
       lastName,
       email,
-      username,
+      userName,
       password,
       avatarSrc,
       joined,
@@ -162,6 +163,27 @@ const CreateUser = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(404).json({ status: 404, data: { ...newUser }, message: err });
+  } finally {
+    client.close();
+    console.log("disconnected");
+  }
+};
+
+const GetAllUsers = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const db = client.db("Pirate-Looter");
+
+    const results = await db.collection("users").find().toArray();
+
+    results.length > 0
+      ? res.status(200).json({ status: 200, data: results })
+      : res.status(404).json({ status: 404, data: results });
+  } catch (err) {
+    console.log(err);
   } finally {
     client.close();
     console.log("disconnected");
@@ -237,6 +259,7 @@ const EditUserById = async (req, res) => {
 module.exports = {
   EditUserById,
   CreateUser,
+  GetAllUsers,
   GetUserById,
   FakeRemoveUser,
   RealRemoveUser,

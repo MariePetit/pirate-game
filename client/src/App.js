@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import RandomCard from "./components/RandomCard";
+import Signup from "./pages/Signup";
 import { GlobalStyle } from "./components/GlobalStyle";
 
 const App = () => {
@@ -25,8 +26,8 @@ const App = () => {
           <Route exact path="/profile">
             Profile
           </Route>
-          <Route exact path="/signup">
-            Signup
+          <Route exact path="/signin">
+            <Signup />
           </Route>
         </Switch>
       </Router>

@@ -11,6 +11,7 @@ const {
   EditUserById,
   CreateUser,
   GetUserById,
+  GetAllUsers,
   FakeRemoveUser,
   RealRemoveUser,
   AccountRecovery,
@@ -25,6 +26,8 @@ express()
   //GET - getting all cards
   .get(`/cards`, getAllCards)
 
+  //GET - getting all users
+  .get(`/users`, GetAllUsers)
   //GET -getting user by id
   .get("/user/:_id", GetUserById)
   //POST - creating a new user
