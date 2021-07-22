@@ -4,12 +4,15 @@ import App from "./App";
 
 import { StatsProvider } from "./components/StatsContext";
 import { CardProvider } from "./components/CardContext";
+import { UserProvider } from "./components/UserContext";
 
 ReactDOM.render(
-  <CardProvider>
-    <StatsProvider>
-      <App />
-    </StatsProvider>
-  </CardProvider>,
+  <UserProvider>
+    <CardProvider>
+      <StatsProvider>
+        <App />
+      </StatsProvider>
+    </CardProvider>
+  </UserProvider>,
   document.getElementById("root")
 );

@@ -1,6 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 import { checkIfLost } from "./checkIfLostFunction";
+// import { UserContext } from "./UserContext";
 
 const initialState = {
   gold: 50,
@@ -17,6 +18,29 @@ export const StatsProvider = ({ children }) => {
   const [showChanges, setShowChanges] = useState("none");
   const [state, setState] = useState(initialState);
   const [reasonForLost, setReasonForLost] = useState("");
+
+  // const { user } = useContext(UserContext);
+
+  // a useEffect that takes the user's stats and sets them for the game
+  // useEffect(() => {
+  //   if (user._id) {
+  //     const pirate = user.pirates.filter((pirate) => !pirate.isDead);
+  //     console.log(pirate[0]);
+  //     const crewEnergy = pirate[0].boat.crew.reduce((total, crewMate) => {
+  //       return total + crewMate.energy;
+  //     }, 0);
+  //     const crewMoral = pirate[0].boat.crew.reduce((total, crewMate) => {
+  //       return total + crewMate.moral;
+  //     }, 0);
+
+  //     const moral = crewMoral + pirate[0].moral;
+  //     const energy = crewEnergy + pirate[0].energy;
+  //     const health = pirate[0].boat.health;
+  //     const gold = pirate[0].gold + Math.round(Math.random() * 100);
+
+  //     setState({ gold, moral, health, energy });
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     const reason = checkIfLost(state);

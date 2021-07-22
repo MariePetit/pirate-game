@@ -10,7 +10,7 @@ const RandomCard = () => {
   const [singleCard, setSingleCard] = useState({});
   const [tick, setTick] = useState(0);
 
-  const { state, hasLost, reasonForLost, setHasLost, setScurvy, showChanges } =
+  const { hasLost, reasonForLost, setHasLost, setScurvy } =
     useContext(StatsContext);
   const { eventCards, endCards } = useContext(CardContext);
 
