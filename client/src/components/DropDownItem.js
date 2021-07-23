@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+
 import { Link } from "react-router-dom";
 
-const ListItem = ({ title, icon, link, disabled }) => {
+const DropDownItem = ({ disabled, icon, title, link }) => {
   return (
     <Item>
       <StyledLink disabled={disabled} to={`/${disabled ? "" : link}`}>
@@ -10,7 +11,6 @@ const ListItem = ({ title, icon, link, disabled }) => {
           <>
             {icon}
             {title}
-            <span style={{ transform: "scaleX(-1)" }}>{icon}</span>
           </>
         ) : (
           title
@@ -26,22 +26,21 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   display: flex;
   justify-content: space-around;
-  margin-top: 10px;
   font-weight: bold;
   font-size: 20px;
-  padding: 20px 0px;
-  max-width: 400px;
-  min-width: 200px;
+  padding: 10px 0px;
+  width: 150px;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   background: beige;
   transition: 200ms ease-in-out;
   border-radius: 2px;
   &:hover {
-    transform: ${({ disabled }) => (disabled ? "scale(1)" : "scale(1.1)")};
-    box-shadow: ${({ disabled }) => (disabled ? "none" : "0 0 15px 1px gray")};
+    transform: ${({ disabled }) => (disabled ? "scale(1)" : "scale(1.03)")};
+    background: ${({ disabled }) =>
+      disabled ? "beige" : "rgb(196, 173, 130)"};
   }
 `;
 
 const Item = styled.li``;
 
-export default ListItem;
+export default DropDownItem;

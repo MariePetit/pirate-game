@@ -4,6 +4,17 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
+  const [alivePirate, setAlivePirate] = useState({});
+
+  useEffect(() => {
+    if (user.pirates) {
+      const pirateInArray = user.pirates.filter(
+        (pirate) => pirate.isDead === false
+      );
+
+      setAlivePirate(pirateInArray[0]);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (localStorage.getItem("userLoggedIn")) {
@@ -17,8 +28,12 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
+  console.log(alivePirate);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, alivePirate, setAlivePirate }}
+    >
       {children}
     </UserContext.Provider>
   );
