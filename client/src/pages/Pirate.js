@@ -1,16 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { UserContext } from "../components/UserContext";
+import { StatsContext } from "../components/StatsContext";
 import CrewMate from "../components/CrewMate";
 import OwnedMapCard from "../components/OwnedMapCard";
 import GoldAmountModal from "../modals/GoldAmountModal";
 
 const Pirate = () => {
+  const history = useHistory();
   const [crewStats, setCrewStats] = useState({});
   const [totalStats, setTotalStats] = useState({});
-  const { user, alivePirate } = useContext(UserContext);
-  const [showModal, setShowModal] = useState(false);
+
+  const { user, alivePirate, setAlivePirate } = useContext(UserContext);
+  const { state, setState, setChosenMap, chosenMap } = useContext(StatsContext);
 
   useEffect(() => {
     if (alivePirate.boat) {
@@ -31,18 +35,34 @@ const Pirate = () => {
     }
   }, [user]);
 
-  const handleSetGoldAmount = ({ chosenMap }) => {};
+  const handleStartGame = (gold) => {
+    setState({ ...totalStats, gold });
+    setAlivePirate({ ...alivePirate, gold: alivePirate.gold - gold });
+    history.push(`/game`);
+  };
 
+  const handleSetGoldAmount = (clickedMap) => {
+    setChosenMap(clickedMap);
+    const modal = document.getElementById("goldAmountModal");
+    if (modal) {
+      modal.style.visibility = "visible";
+      modal.style.opacity = "1";
+    }
+  };
+  console.log(alivePirate);
   return (
     <>
-      <GoldAmountModal showModal={showModal} setShowModal={setShowModal} />
+      <GoldAmountModal
+        handleStartGame={handleStartGame}
+        alivePirate={alivePirate}
+      />
       <Wrapper>
         {alivePirate.boat ? (
           <PirateWrapper>
             <Name>{alivePirate.name}</Name>
             <Info>
               <InfoItem> Has survived {alivePirate.age} days at sea</InfoItem>
-              <InfoItem>Gold:{totalStats.gold}</InfoItem>
+              <InfoItem>Gold:{alivePirate.gold}</InfoItem>
               <InfoItem>
                 Energy:{totalStats.energy} /
                 <span>{crewStats.energy} energy from crew mates</span>{" "}
@@ -64,10 +84,10 @@ const Pirate = () => {
             </BoatWrapper>
             <MapsWrapper>
               {alivePirate.treasureMaps.length > 0 &&
-                alivePirate.treasureMaps.map((map) => {
+                alivePirate.treasureMaps.map((map, index) => {
                   return (
                     <OwnedMapCard
-                      key={map.name}
+                      key={index}
                       map={map}
                       handleSetGoldAmount={handleSetGoldAmount}
                     />

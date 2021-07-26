@@ -100,15 +100,15 @@ const Wrapper = styled.button`
   border: none;
   cursor: pointer;
   top: 10px;
-  right: -110px;
+  right: 0px;
   position: absolute;
   background-color: beige;
   height: 40px;
   overflow: hidden;
-  width: 150px;
+  width: 30px;
   transition: 200ms ease-in-out;
   &:hover {
-    right: 0px;
+    width: 150px;
   }
 `;
 

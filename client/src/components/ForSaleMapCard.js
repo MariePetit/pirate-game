@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const ForSaleMapCard = ({
   map,
-  map: { name, cost, length, sold },
+  map: { name, cost, tripLength, sold },
   userGold,
   handlePurchase,
 }) => {
@@ -18,8 +18,8 @@ const ForSaleMapCard = ({
       <StatList>
         <Stat>costs {cost} gold</Stat>
         <Stat>
-          This trip is {Math.round(length / 2)} days to go and{" "}
-          {Math.floor(length / 2)} to get back.{" "}
+          This trip is {Math.round(tripLength / 2)} days to go and{" "}
+          {Math.floor(tripLength / 2)} to get back.{" "}
         </Stat>
         <Stat> resell value is {sold} gold</Stat>
       </StatList>

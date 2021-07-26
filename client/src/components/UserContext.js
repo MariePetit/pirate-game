@@ -28,8 +28,6 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  console.log(alivePirate);
-
   return (
     <UserContext.Provider
       value={{ user, setUser, alivePirate, setAlivePirate }}

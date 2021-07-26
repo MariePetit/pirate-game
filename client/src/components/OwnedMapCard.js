@@ -7,7 +7,7 @@ const OwnedMapCard = ({ map, handleSetGoldAmount }) => {
       <Name>{map.name}</Name>
       <MapStatList>
         <MapStat>sells for {map.sold}</MapStat>
-        <MapStat>This is a {map.length} day long trip</MapStat>
+        <MapStat>This is a {map.tripLength} day long trip</MapStat>
       </MapStatList>
       <MapUseButton
         onClick={() => {

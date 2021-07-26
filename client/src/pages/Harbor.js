@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 
 import { UserContext } from "../components/UserContext";
-import MapCard from "../components/ForSaleMapCard";
+import ForSaleMapCard from "../components/ForSaleMapCard";
 
 const Harbor = () => {
   const [mapsOnSale, setMapsOnSale] = useState([]);
@@ -38,7 +38,7 @@ const Harbor = () => {
       cost: Math.round(25 * difficulty * 1.25),
       sold: Math.round((25 * difficulty) / 2),
       loot: 100 * (difficulty * 2),
-      length: Math.round(3 * difficulty * 1.5),
+      tripLength: Math.round(3 * difficulty * 1.5),
     };
     return trasureMap;
   };
@@ -51,7 +51,6 @@ const Harbor = () => {
     });
     setPurchasedMap(map);
   };
-
   return (
     <>
       {purchasedMap && (
@@ -63,7 +62,7 @@ const Harbor = () => {
         {mapsOnSale.length > 0 &&
           mapsOnSale.map((map) => {
             return (
-              <MapCard
+              <ForSaleMapCard
                 key={map.name}
                 map={map}
                 userGold={alivePirate.gold}

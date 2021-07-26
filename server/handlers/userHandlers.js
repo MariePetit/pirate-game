@@ -215,10 +215,10 @@ const GetUserById = async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({ status: 400, data: err, message: "uh oh" });
+  } finally {
+    client.close();
+    console.log("disconnected");
   }
-
-  client.close();
-  console.log("disconnected");
 };
 
 const EditUserById = async (req, res) => {
