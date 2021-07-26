@@ -9,10 +9,23 @@ import { CardContext } from "./CardContext";
 const RandomCard = () => {
   const [singleCard, setSingleCard] = useState({});
   const [tick, setTick] = useState(0);
+  const [adventureLength, setAdventureLength] = useState(0);
 
-  const { hasLost, reasonForLost, setHasLost, setScurvy } =
-    useContext(StatsContext);
+  const {
+    hasLost,
+    reasonForLost,
+    setHasLost,
+    setScurvy,
+    chosenMap,
+    setChosenMap,
+  } = useContext(StatsContext);
   const { eventCards, endCards } = useContext(CardContext);
+
+  useEffect(() => {
+    if (chosenMap) {
+      setAdventureLength(chosenMap.tripLength);
+    }
+  }, [chosenMap]);
 
   useEffect(() => {
     if (hasLost) {
@@ -25,7 +38,10 @@ const RandomCard = () => {
   }, [hasLost]);
 
   const getRandomCard = () => {
-    setTick(tick + 1);
+    if (adventureLength === 0) {
+      alert("Victory!!");
+    }
+
     let randomNum = Math.round(Math.random() * (eventCards.length - 1));
     if (singleCard?.name === eventCards[randomNum]?.name) {
       randomNum = Math.round(Math.random() * eventCards.length);
@@ -38,12 +54,43 @@ const RandomCard = () => {
     if (eventCards[randomNum]?.name?.toLowerCase() === "scurvy") {
       setScurvy(true);
     }
-    setSingleCard(eventCards[randomNum]);
+    console.log(Math.floor(chosenMap.tripLength / 2));
+    console.log(tick);
+    if (tick === Math.floor(chosenMap.tripLength / 2)) {
+      setSingleCard({
+        name: "Burried Treasure!!",
+        id: randomNum,
+        description: `X marks the spot! You arrived at the burried treasure and found ${chosenMap.loot} gold!`,
+        leftChoice: {
+          energy: 0,
+          gold: chosenMap.loot,
+          health: 0,
+          moral: 0,
+          text: "Back to Harbor we go!",
+        },
+        rightChoice: {
+          energy: 0,
+          gold: chosenMap.loot,
+          health: 0,
+          moral: 0,
+          text: "Back to Harbor we go!",
+        },
+      });
+    } else {
+      setSingleCard(eventCards[randomNum]);
+    }
+
+    if (singleCard.name) {
+      setAdventureLength(adventureLength - 1);
+      setTick(tick + 1);
+    }
   };
+
   return (
     <Wrapper>
       <StatsWrapper>
         <StatsItem>Day: {tick}</StatsItem>
+        <StatsItem>Trip day's left: {adventureLength}</StatsItem>
         {singleCard && (
           <>
             <StatDisplay

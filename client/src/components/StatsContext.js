@@ -18,6 +18,7 @@ export const StatsProvider = ({ children }) => {
   const [showChanges, setShowChanges] = useState("none");
   const [state, setState] = useState(initialState);
   const [reasonForLost, setReasonForLost] = useState("");
+  const [chosenMap, setChosenMap] = useState(null);
 
   // const { user } = useContext(UserContext);
 
@@ -64,6 +65,8 @@ export const StatsProvider = ({ children }) => {
         setScurvy,
         showChanges,
         setShowChanges,
+        chosenMap,
+        setChosenMap,
       }}
     >
       {children}

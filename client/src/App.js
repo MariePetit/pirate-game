@@ -11,6 +11,7 @@ import Harbor from "./pages/Harbor";
 import About from "./pages/About";
 import Forum from "./pages/Forum";
 import Pirate from "./pages/Pirate";
+import DropDown from "./components/DropDown";
 
 const App = () => {
   return (
@@ -22,27 +23,35 @@ const App = () => {
             <HomePage />
           </Route>
           <Route exact path="/game">
+            <DropDown />
             <RandomCard />
           </Route>
           <Route exact path="/harbor">
+            <DropDown />
             <Harbor />
           </Route>
           <Route exact path="/settings">
+            <DropDown />
             <Settings />
           </Route>
           <Route exact path="/profile">
+            <DropDown />
             <Profile />
           </Route>
           <Route exact path="/pirate">
+            <DropDown />
             <Pirate />
           </Route>
           <Route exact path="/signin">
+            <DropDown />
             <Signup />
           </Route>
           <Route exact path="/about">
+            <DropDown />
             <About />
           </Route>
           <Route exact path="/forum">
+            <DropDown />
             <Forum />
           </Route>
         </Switch>
