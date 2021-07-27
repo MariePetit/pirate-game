@@ -57,8 +57,8 @@ const Stat = styled.div`
 `;
 
 const HoverChange = styled.div`
-  width: ${({ size }) => (size > 50 ? "25px" : `${size}px`)};
-  height: ${({ size }) => (size > 50 ? "25px" : `${size}px`)};
+  width: ${({ size }) => (size >= 40 ? "25px" : `${size}px`)};
+  height: ${({ size }) => (size >= 40 ? "25px" : `${size}px`)};
   border-radius: 50px;
   margin-left: 5px;
   background: ${({ color }) =>

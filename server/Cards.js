@@ -120,10 +120,10 @@ const eventCards = [
         },
         {
           name: "Box of Oranges",
-          type: "oranges",
           description:
             "Vitamin C is nothing to scoff at. Everyone eats a few and feels much better. ",
           leftChoice: {
+            type: "oranges",
             text: "Yummy",
             gold: 0,
             moral: 0,
@@ -131,6 +131,7 @@ const eventCards = [
             energy: 20,
           },
           rightChoice: {
+            type: "oranges",
             text: "Yummy",
             gold: 0,
             moral: 0,
@@ -380,7 +381,7 @@ const eventCards = [
           "The privateers listened for a few sentences and decided payement was still due.",
         leftChoice: {
           text: "Accept and pay the toll.",
-          gold: -40,
+          gold: -30,
           moral: -20,
           health: 0,
           energy: 0,
@@ -459,8 +460,9 @@ const eventCards = [
         {
           name: "Mermaids",
           description:
-            "Your ship get's close to a single rock peaking out of the sea, you sea a beautiful mermaid and your eyes meet. The mermaid jumps and disappears in the ocean.",
+            "Your ship get's close to a single rock peaking out of the sea, you sea a beautiful mermaid and your eyes meet. The mermaid jumps and disappears in the ocean. (removes curse debuffs)",
           leftChoice: {
+            type: "devineSight",
             text: "Smile at the rare sighting",
             gold: 0,
             moral: 20,
@@ -468,6 +470,7 @@ const eventCards = [
             energy: 10,
           },
           rightChoice: {
+            type: "devineSight",
             text: "Smile at the rare sighting",
             gold: 0,
             moral: 20,
@@ -503,6 +506,7 @@ const eventCards = [
     description:
       "Your crew forgot to pack some oranges. After not being at sea for long, your crew now has scurvy! (each turn you will loose health until you find oranges)",
     leftChoice: {
+      type: "scurvy",
       text: "aaarrrgggg",
       gold: 0,
       moral: 0,
@@ -510,6 +514,7 @@ const eventCards = [
       energy: 0,
     },
     rightChoice: {
+      type: "scurvy",
       text: "aaaarrrggggg",
       gold: 0,
       moral: 0,
@@ -520,17 +525,18 @@ const eventCards = [
   },
   {
     name: "Oranges!",
-    type: "oranges",
     description:
       "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
     leftChoice: {
-      text: "Vitamns are important!",
+      type: "oranges",
+      text: "Vitamins are important!",
       gold: 0,
       moral: 0,
       health: +10,
       energy: 0,
     },
     rightChoice: {
+      type: "oranges",
       text: "Vitamins are important!",
       gold: 0,
       moral: 0,
@@ -541,17 +547,18 @@ const eventCards = [
   },
   {
     name: "Oranges!",
-    type: "oranges",
     description:
       "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
     leftChoice: {
-      text: "Vitamns are important!",
+      type: "oranges",
+      text: "Vitamins are important!",
       gold: 0,
       moral: 0,
       health: +10,
       energy: 0,
     },
     rightChoice: {
+      type: "oranges",
       text: "Vitamins are important!",
       gold: 0,
       moral: 0,
@@ -562,17 +569,18 @@ const eventCards = [
   },
   {
     name: "Oranges!",
-    type: "oranges",
     description:
       "having found a crate of oranges, your crew gulps it down! (removes scurvy) ",
     leftChoice: {
-      text: "Vitamns are important!",
+      type: "oranges",
+      text: "Vitamins are important!",
       gold: 0,
       moral: 0,
       health: +10,
       energy: 0,
     },
     rightChoice: {
+      type: "oranges",
       text: "Vitamins are important!",
       gold: 0,
       moral: 0,
@@ -582,21 +590,123 @@ const eventCards = [
     image: "this will be where we put the image sprite for the card",
   },
   {
-    name: "cardName",
-    description: "",
+    name: "Cursed Ship",
+    description:
+      "As you are sailing on a misty day you come across a wrecked and abandonned ship",
     leftChoice: {
-      text: "",
+      text: "Continue on your journey",
       gold: 0,
-      moral: 0,
+      moral: -10,
       health: 0,
       energy: 0,
     },
     rightChoice: {
-      text: "",
+      text: "dock the ship and investigate",
       gold: 0,
-      moral: 0,
+      moral: 10,
       health: 0,
-      energy: 0,
+      energy: -10,
+      useSecondAction: true,
+    },
+    secondAction: {
+      items: [
+        {
+          name: "Stranded Stranger",
+          description:
+            "investigating the wreck, you find an abandonned person with an odd looking crest on his chest.",
+          leftChoice: {
+            type: "curse",
+            text: "Save him (inflicts a curse that reduces moral until back at the harbor. If you survive you can add the stranger to your crew. negative status is removed if a mermaid is spotted.)",
+            gold: 0,
+            moral: 10,
+            health: 0,
+            energy: -10,
+          },
+          rightChoice: {
+            text: "Leave the cursed man behind.",
+            gold: 0,
+            moral: -5,
+            health: 0,
+            energy: 0,
+          },
+        },
+        {
+          name: "Gold",
+          description:
+            "tossing a few planks aside you find a chest with a few gold pieces inside!",
+          leftChoice: {
+            text: "The fortune is ours!",
+            gold: 20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "The fortune is ours!",
+            gold: 20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+        },
+        {
+          name: "Lost Spirit",
+          description:
+            "You get a cold wind down your spine and sharp cut on your arm, a voice is heard 'turn back!!'",
+          leftChoice: {
+            text: "leave this haunted place!",
+            gold: 0,
+            moral: 0,
+            health: -10,
+            energy: -10,
+          },
+          rightChoice: {
+            text: "leave this haunted place!",
+            gold: 0,
+            moral: 0,
+            health: -10,
+            energy: -10,
+          },
+        },
+        {
+          name: "Gold",
+          description:
+            "tossing a few planks aside you find a chest with a few gold pieces inside!",
+          leftChoice: {
+            text: "The fortune is ours!",
+            gold: 20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+          rightChoice: {
+            text: "The fortune is ours!",
+            gold: 20,
+            moral: 0,
+            health: 0,
+            energy: 0,
+          },
+        },
+        {
+          name: "Nothing...",
+          description:
+            "after searching for what seems like an hour, you find nothing and return to your ship.",
+          leftChoice: {
+            text: "what a waste",
+            gold: 0,
+            moral: 0,
+            health: 0,
+            energy: -10,
+          },
+          rightChoice: {
+            text: "what a waste",
+            gold: 0,
+            moral: 0,
+            health: 0,
+            energy: -10,
+          },
+        },
+      ],
     },
     image: "this will be where we put the image sprite for the card",
   },
@@ -895,207 +1005,19 @@ const endCards = [
     },
     image: "this will be where we put the image sprite for the card",
   },
-];
-const SpecialCasesCards = [
   {
-    name: "cardName",
-    type: "",
-    description: "",
+    name: "Back to Harbor",
+    type: "victory",
+    description:
+      "Finally hitting land after fetching your loot, you finally return! Treasure in hand!",
     leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
+      text: "Pirate's life for me!",
     },
     rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    image: "this will be where we put the image sprite for the card",
-  },
-  {
-    name: "cardName",
-    type: "",
-    description: "",
-    leftChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
-    },
-    rightChoice: {
-      text: "",
-      gold: 0,
-      moral: 0,
-      health: 0,
-      energy: 0,
+      text: "Pirate's life for me!",
     },
     image: "this will be where we put the image sprite for the card",
   },
 ];
-module.exports = { eventCards, endCards, SpecialCasesCards };
+
+module.exports = { eventCards, endCards };

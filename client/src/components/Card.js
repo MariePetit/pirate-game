@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
+import { UserContext } from "./UserContext";
 import { StatsContext } from "./StatsContext";
 
 const Card = ({
@@ -11,18 +13,47 @@ const Card = ({
   setHasLost,
   tick,
   setTick,
+  chosenMap,
 }) => {
-  const { state, setState, scurvy, initialState, setShowChanges } =
-    useContext(StatsContext);
+  const {
+    state,
+    setState,
+    scurvy,
+    setScurvy,
+    initialState,
+    setShowChanges,
+    isCursed,
+    setIsCursed,
+    hasWon,
+    setHasWon,
+  } = useContext(StatsContext);
+  const { alivePirate, setAlivePirate } = useContext(UserContext);
+  const history = useHistory();
   const { name, description, leftChoice, rightChoice, secondAction } = card;
 
   const handleStatChanges = (choice) => {
-    const leftButton = document.getElementById("leftButton");
-    const rightButton = document.getElementById("rightButton");
-
-    leftButton.blur();
-    rightButton.blur();
-
+    if (hasWon && choice.text === "Pirate's life for me!") {
+      setTimeout(() => {
+        const newTreasureMapArray = alivePirate.treasureMaps.filter(
+          (map) => map.id !== chosenMap.id
+        );
+        setAlivePirate({
+          ...alivePirate,
+          age: alivePirate.age + tick,
+          boat: { ...alivePirate.boat, health: state.health },
+          gold: alivePirate.gold + state.gold,
+          energy:
+            state.energy > alivePirate.energy
+              ? alivePirate.energy
+              : state.energy,
+          moral:
+            state.moral > alivePirate.moral ? alivePirate.moral : state.moral,
+          treasureMaps: newTreasureMapArray,
+        });
+        setHasWon(false);
+        history.push("/pirate");
+      }, 500);
+    }
     if (hasLost) {
       setSingleCard({});
       setState(initialState);
@@ -30,23 +61,7 @@ const Card = ({
       setTick(0);
       setHasLost(false);
     } else {
-      const { gold, moral, health, energy } = choice;
-      if (scurvy) {
-        setState({
-          gold: state.gold + gold,
-          moral: state.moral + moral,
-          health: state.health + health - 10,
-          energy: state.energy + energy,
-        });
-      } else {
-        setState({
-          gold: state.gold + gold,
-          moral: state.moral + moral,
-          health: state.health + health,
-          energy: state.energy + energy,
-        });
-      }
-
+      checkForSpecialState(choice);
       if (choice.useSecondAction) {
         if (secondAction.items) {
           let randomNum = Math.round(
@@ -60,6 +75,41 @@ const Card = ({
         getRandomCard();
       }
     }
+  };
+
+  const checkForSpecialState = (choice) => {
+    let { gold, moral, health, energy, type } = choice;
+    switch (type) {
+      case "scurvy": {
+        setScurvy(true);
+        break;
+      }
+      case "oranges": {
+        setScurvy(false);
+        break;
+      }
+      case "curse": {
+        setIsCursed(true);
+        break;
+      }
+      case "devineSight": {
+        setIsCursed(true);
+        break;
+      }
+    }
+
+    if (scurvy) {
+      health = health - 10;
+    }
+    if (isCursed) {
+      moral = moral - 5;
+    }
+    setState({
+      gold: state.gold + gold,
+      moral: state.moral + moral,
+      health: state.health + health,
+      energy: state.energy + energy,
+    });
   };
 
   return (
