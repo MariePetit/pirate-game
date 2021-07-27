@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext(null);
-
+// random comment!!
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [alivePirate, setAlivePirate] = useState({});
@@ -27,7 +27,6 @@ export const UserProvider = ({ children }) => {
       );
     }
   }, []);
-
   return (
     <UserContext.Provider
       value={{ user, setUser, alivePirate, setAlivePirate }}

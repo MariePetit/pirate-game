@@ -49,7 +49,6 @@ const Pirate = () => {
       modal.style.opacity = "1";
     }
   };
-  console.log(alivePirate);
   return (
     <>
       <GoldAmountModal
