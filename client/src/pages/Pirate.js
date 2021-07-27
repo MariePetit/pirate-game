@@ -33,7 +33,7 @@ const Pirate = () => {
       setTotalStats({ moral, energy, health, gold });
       setCrewStats({ moral: crewMoral, energy: crewEnergy });
     }
-  }, [user]);
+  }, [user, alivePirate]);
 
   const handleStartGame = (gold) => {
     setState({ ...totalStats, gold });
@@ -49,6 +49,7 @@ const Pirate = () => {
       modal.style.opacity = "1";
     }
   };
+
   return (
     <>
       <GoldAmountModal
