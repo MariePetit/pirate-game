@@ -256,6 +256,29 @@ const EditUserById = async (req, res) => {
   }
 };
 
+const getUserByLogin = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const { userName, password } = req.params;
+    const db = client.db("Pirate-Looter");
+
+    const result = await db.collection("users").findOne({ userName, password });
+    if (result.userName) {
+      return res.status(202).json({ status: 202, data: result });
+    } else {
+      res.status(404).json({ status: 404, message: "user not found." });
+    }
+  } catch (err) {
+    res.status(400).json({ status: 400, message: "something went wrong..." });
+  } finally {
+    client.close();
+    console.log("disconnected");
+  }
+};
+
 module.exports = {
   EditUserById,
   CreateUser,
@@ -264,4 +287,5 @@ module.exports = {
   FakeRemoveUser,
   RealRemoveUser,
   AccountRecovery,
+  getUserByLogin,
 };

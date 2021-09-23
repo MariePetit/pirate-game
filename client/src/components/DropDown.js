@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 import DropDownItem from "./DropDownItem";
 
@@ -12,23 +13,33 @@ import {
 } from "react-icons/gi";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { BsFillGearFill, BsInfoSquareFill } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
 import { UserContext } from "../components/UserContext";
+import { NotStyledButton } from "../buttons/NotStyledButton";
 
 const DropDown = () => {
+  const history = useHistory();
   const size = 20;
 
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const openDropDown = () => {
     const DropDown = document.getElementById("dropDownId");
 
-    DropDown.style.height = "337px";
+    DropDown.style.height = "380px";
   };
 
   const closeDropDown = () => {
     const DropDown = document.getElementById("dropDownId");
 
     DropDown.style.height = "40px";
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("userLoggedIn");
+    localStorage.removeItem("loggedInUserId");
+    setUser({});
+    history.push("/");
   };
   return (
     <>
@@ -82,11 +93,41 @@ const DropDown = () => {
             link="about"
             icon={<BsInfoSquareFill style={{ width: size, height: size }} />}
           />
+          <li>
+            <LogOutButton
+              onClick={handleLogOut}
+              disabled={!localStorage.getItem("userLoggedIn")}
+            >
+              <FiLogOut />
+              Sign Out
+            </LogOutButton>
+          </li>
         </List>
       </Wrapper>
     </>
   );
 };
+
+const LogOutButton = styled(NotStyledButton)`
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  color: black;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 10px 0px;
+  width: 150px;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
+  background: beige;
+  transition: 200ms ease-in-out;
+  border-radius: 2px;
+  &:hover {
+    transform: ${({ disabled }) => (disabled ? "scale(1)" : "scale(1.03)")};
+    background: ${({ disabled }) =>
+      disabled ? "beige" : "rgb(196, 173, 130)"};
+  }
+`;
 
 const Logo = styled.div`
   position: absolute;

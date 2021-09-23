@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 import ListItem from "../components/ListItem";
 import {
@@ -13,26 +14,33 @@ import { UserContext } from "../components/UserContext";
 
 const HomePage = () => {
   const size = 20;
-
+  const history = useHistory();
   const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!localStorage.getItem("userLoggedIn")) {
+      history.push("/intro");
+    }
+  }, [user]);
+
   return (
     <Wrapper>
       <List>
         <ListItem title="Home" link="" />
         <ListItem
-          disabled={!user}
+          disabled={!user.userName}
           title="Pirate"
           link="pirate"
           icon={<GiPirateCaptain style={{ width: size, height: size }} />}
         />
         <ListItem
-          disabled={!user}
+          disabled={!user.userName}
           title="Account"
           link="profile"
           icon={<RiAccountBoxFill style={{ width: size, height: size }} />}
         />
         <ListItem
-          disabled={!user}
+          disabled={!user.userName}
           title="Harbor"
           link="harbor"
           icon={
@@ -40,7 +48,7 @@ const HomePage = () => {
           }
         />
         <ListItem
-          disabled={!user}
+          disabled={!user.userName}
           title="Settings"
           link="settings"
           icon={<BsFillGearFill style={{ width: size, height: size }} />}

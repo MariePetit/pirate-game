@@ -15,6 +15,7 @@ const {
   FakeRemoveUser,
   RealRemoveUser,
   AccountRecovery,
+  getUserByLogin,
 } = require("./handlers/userHandlers");
 
 const PORT = 8000;
@@ -30,6 +31,8 @@ express()
   .get(`/users`, GetAllUsers)
   //GET -getting user by id
   .get("/user/:_id", GetUserById)
+  //GET -get user by login info
+  .get("/user/userName/:userName/password/:password", getUserByLogin)
   //POST - creating a new user
   .post(`/user`, CreateUser)
   //PATCH - recovering fake deleted account
