@@ -5,6 +5,7 @@ import { UserContext } from "../components/UserContext";
 import UserEdit from "../components/settingComponents/UserEdit";
 
 const Profile = () => {
+  //all the profile changes are below with 1 helper JS file (UserEdit.js)
   const {
     user: {
       userName,

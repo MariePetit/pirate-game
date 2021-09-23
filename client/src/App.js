@@ -12,6 +12,7 @@ import About from "./pages/About";
 import Forum from "./pages/Forum";
 import Pirate from "./pages/Pirate";
 import DropDown from "./components/DropDown";
+import IntroPage from "./pages/IntroPage";
 
 const App = () => {
   return (
@@ -21,6 +22,9 @@ const App = () => {
         <Switch>
           <Route exact path="/">
             <HomePage />
+          </Route>
+          <Route exact path="/intro">
+            <IntroPage />
           </Route>
           <Route exact path="/game">
             <DropDown />
@@ -43,7 +47,6 @@ const App = () => {
             <Pirate />
           </Route>
           <Route exact path="/signin">
-            <DropDown />
             <Signup />
           </Route>
           <Route exact path="/about">
