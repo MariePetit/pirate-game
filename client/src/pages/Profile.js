@@ -5,7 +5,6 @@ import { UserContext } from "../components/UserContext";
 import UserEdit from "../components/settingComponents/UserEdit";
 
 const Profile = () => {
-  // adding a random comment
   const {
     user: {
       userName,
