@@ -12,9 +12,44 @@ const Pirate = () => {
   const history = useHistory();
   const [crewStats, setCrewStats] = useState({});
   const [totalStats, setTotalStats] = useState({});
+  const [isHealing, setIsHealing] = useState(false);
 
   const { user, alivePirate, setAlivePirate } = useContext(UserContext);
   const { state, setState, setChosenMap, chosenMap } = useContext(StatsContext);
+
+  useEffect(() => {
+    const delay = 2000;
+    let moralHeal = 0;
+    let energyHeal = 0;
+    let healthHeal = 0;
+    if (totalStats.energy < alivePirate.totalEnergy) {
+      energyHeal = 1;
+    }
+    if (totalStats.moral < alivePirate.totalMoral) {
+      moralHeal = 1;
+    }
+    if (totalStats.health < alivePirate.boat?.totalHealth) {
+      healthHeal = 1;
+    }
+
+    if (moralHeal > 0 || energyHeal > 0 || healthHeal > 0) {
+      setTimeout(() => {
+        let newStats = {
+          ...totalStats,
+          energy: totalStats.energy + energyHeal,
+          moral: totalStats.moral + moralHeal,
+          health: totalStats.health + healthHeal,
+        };
+        setTotalStats(newStats);
+
+        fetch(`/pirate/stats/${user._id}/pirateId/${alivePirate.pirateId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ newStats }),
+        });
+      }, delay);
+    }
+  }, [totalStats]);
 
   useEffect(() => {
     if (alivePirate.boat) {
@@ -37,7 +72,22 @@ const Pirate = () => {
 
   const handleStartGame = (gold) => {
     setState({ ...totalStats, gold });
-    setAlivePirate({ ...alivePirate, gold: alivePirate.gold - gold });
+
+    let newStats = {
+      ...totalStats,
+      gold: alivePirate.gold - gold,
+      age: alivePirate.age,
+    };
+    fetch(`/pirate/stats/${user._id}/pirateId/${alivePirate.pirateId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ newStats }),
+    }).then((res) =>
+      res.json().then(({ data }) => {
+        setAlivePirate(data);
+      })
+    );
+
     history.push(`/game`);
   };
 
@@ -62,16 +112,18 @@ const Pirate = () => {
             <Name>{alivePirate.name}</Name>
             <Info>
               <InfoItem> Has survived {alivePirate.age} days at sea</InfoItem>
-              <InfoItem>Gold:{alivePirate.gold}</InfoItem>
+              <InfoItem>Gold: {alivePirate.gold}</InfoItem>
               <InfoItem>
-                Energy:{totalStats.energy} /
-                <span>{crewStats.energy} energy from crew mates</span>{" "}
+                Energy: {totalStats.energy} / {alivePirate.totalEnergy}
+                <span> -- {crewStats.energy} energy from crew mates</span>{" "}
               </InfoItem>
               <InfoItem>
-                Moral:{totalStats.moral} /
-                <span>{crewStats.moral} moral from crew mates</span>{" "}
+                Moral: {totalStats.moral} / {alivePirate.totalMoral}
+                <span> -- {crewStats.moral} moral from crew mates</span>{" "}
               </InfoItem>
-              <InfoItem>Health:{alivePirate.boat.health}</InfoItem>
+              <InfoItem>
+                Health: {totalStats.health} / {alivePirate.boat.totalHealth}
+              </InfoItem>
             </Info>
             <BoatWrapper>
               <Name>{alivePirate.boat.boatName}</Name>
@@ -104,6 +156,7 @@ const Pirate = () => {
 };
 
 const InfoItem = styled.li`
+  transition: 200ms ease-in-out;
   span {
     font-size: 12px;
     color: gray;

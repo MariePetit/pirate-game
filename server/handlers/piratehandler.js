@@ -6,9 +6,7 @@ const { MONGO_URI } = process.env;
 
 const { randomPirateName } = require("./helpers/randomCaptainName");
 const { randomBoatName } = require(`./helpers/randomBoatName`);
-const {
-  PirateChangesObjectCreator,
-} = require("./helpers/PirateStatsFunctions");
+const { updateStats } = require("./helpers/updateStats");
 
 const options = {
   useNewUrlParser: true,
@@ -36,11 +34,14 @@ const AddNewPirate = async (req, res) => {
         avatarSrc: `randomPic`,
         treasureMaps: [],
         moral: 100,
+        totalMoral: 100,
         energy: 100,
+        totalEnergy: 100,
         boat: {
           boatName: boatName ? boatName : randomBoatName(),
           crew: [],
           health: 75,
+          totalHealth: 75,
           customizations: [],
         },
         gold: 0,
@@ -80,18 +81,30 @@ const ChangePirateStats = async (req, res) => {
   await client.connect();
   console.log("connected");
 
-  const { moral, energy, health, gold, age, isDead } = req.body;
-  const { _id } = req.params;
+  const { newStats } = req.body;
+  const { _id, pirateId } = req.params;
 
   try {
     const db = client.db("Pirate-Looter");
 
-    const query = { _id };
-    const newValue = { $update: { pirates: health } };
+    const user = await db.collection("users").findOne({ _id });
 
-    const result = await db.collection("users").updateOne(query, newValue);
-    console.log("RESULT", result);
-    res.status(200).json({ message: "hello :) " });
+    let pirate = user.pirates.filter(
+      (pirate) => pirate.pirateId === pirateId
+    )[0];
+
+    const updatedPirate = updateStats(pirate, newStats);
+
+    await db
+      .collection("users")
+      .updateOne(
+        { _id, "pirates.pirateId": pirateId },
+        { $set: { "pirates.$": updatedPirate } }
+      );
+
+    res
+      .status(200)
+      .json({ message: "update successful! ", data: updatedPirate });
   } catch (err) {
     console.log("ERROR", err);
   } finally {
@@ -105,7 +118,7 @@ const ManageCrewMates = async (req, res) => {
   await client.connect();
   console.log("connected");
 
-  const { _id, pirateId } = req.params;
+  const { _id } = req.params;
   const { crewMate, action } = req.body;
 
   try {

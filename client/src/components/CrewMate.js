@@ -12,8 +12,12 @@ const CrewMate = ({ crewMate }) => {
         })}
       </Attributes>
       <Stats>
-        <Stat>Energy : {energy}</Stat>
-        <Stat>Moral : {moral}</Stat>
+        <Stat>
+          Energy : {energy} / {energy}
+        </Stat>
+        <Stat>
+          Moral : {moral} / {moral}
+        </Stat>
       </Stats>
     </Wrapper>
   );
