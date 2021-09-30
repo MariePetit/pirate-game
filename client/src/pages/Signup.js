@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 import { UserContext } from "../components/UserContext";
 import { formInfoNeeded } from "../components/formInfoNeeded";
@@ -16,6 +17,8 @@ const Signup = () => {
   const [errorArray, setErrorArray] = useState([]);
   const [disabled, setDisabled] = useState(true);
   const { setUser } = useContext(UserContext);
+  const history = useHistory();
+
   useEffect(() => {
     setDisabled(true);
     fetch(`/users`).then((res) => {
@@ -52,14 +55,16 @@ const Signup = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...fullForm }),
-      }).then((res) =>
-        res.json().then((data) => {
-          localStorage.setItem("userLoggedIn", true);
-          localStorage.setItem("loggedInUserId", data.data._id);
+      })
+        .then((res) =>
+          res.json().then((data) => {
+            localStorage.setItem("userLoggedIn", true);
+            localStorage.setItem("loggedInUserId", data.data._id);
 
-          setUser(data.data);
-        })
-      );
+            setUser(data.data);
+          })
+        )
+        .then(() => history.push("/"));
     }
     setErrorArray(errors);
   };

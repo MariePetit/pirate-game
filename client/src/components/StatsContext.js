@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
 import { checkIfLost } from "./checkIfLostFunction";
-// import { UserContext } from "./UserContext";
 
 const initialState = {
   gold: 50,
