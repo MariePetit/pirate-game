@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const { getAllCards } = require("./handlers/cardHandlers");
+const { getAllCards, addACard } = require("./handlers/cardHandlers");
 const {
   AddNewPirate,
   ChangePirateStats,
@@ -26,7 +26,8 @@ express()
 
   //GET - getting all cards
   .get(`/cards`, getAllCards)
-
+  //PUT - create a new card
+  .put(`/cards/:cardType`, addACard)
   //GET - getting all users
   .get(`/users`, GetAllUsers)
   //GET -getting user by id
