@@ -14,7 +14,7 @@ import {
 import { RiAccountBoxFill } from "react-icons/ri";
 import { BsFillGearFill, BsInfoSquareFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "./UserContext";
 import { NotStyledButton } from "../buttons/NotStyledButton";
 
 const DropDown = () => {
