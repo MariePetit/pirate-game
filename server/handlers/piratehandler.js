@@ -178,8 +178,87 @@ const ManageCrewMates = async (req, res) => {
   }
 };
 
+const AddTreasureMap = async (req, res) => {
+  const { _id, pirateId } = req.params;
+  const { map, newGold } = req.body;
+  const client = new MongoClient(MONGO_URI, options);
+
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const query = { _id, "pirates.pirateId": pirateId };
+    const newValue = {
+      $push: {
+        "pirates.$.treasureMaps": { ...map, _id: uuidv4() },
+      },
+      $set: {
+        "pirates.$.gold": newGold,
+      },
+    };
+    const db = client.db("Pirate-Looter");
+
+    const result = await db.collection("users").updateOne(query, newValue);
+
+    if (result.matchedCount > 0) {
+      res.status(200).json({
+        status: 200,
+        message: "added map!",
+        data: result.modifiedCount,
+      });
+    } else {
+      res
+        .status(400)
+        .json({ status: 400, message: "something went wrong.", data: result });
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+    console.log("disconnected");
+  }
+};
+
+const RemoveTreasureMap = async (req, res) => {
+  const { _id, pirateId } = req.params;
+  const map = req.body;
+  const client = new MongoClient(MONGO_URI, options);
+
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const query = { _id, "pirates.pirateId": pirateId };
+    const newValue = {
+      $pull: { "pirates.$.treasureMaps": map },
+    };
+    const db = client.db("Pirate-Looter");
+
+    const result = await db.collection("users").updateOne(query, newValue);
+
+    if (result.matchedCount > 0) {
+      res.status(200).json({
+        status: 200,
+        message: "removed map!",
+        data: result.modifiedCount,
+      });
+    } else {
+      res
+        .status(400)
+        .json({ status: 400, message: "something went wrong.", data: result });
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+    console.log("disconnected");
+  }
+};
+
 module.exports = {
   AddNewPirate,
   ChangePirateStats,
   ManageCrewMates,
+  AddTreasureMap,
+  RemoveTreasureMap,
 };

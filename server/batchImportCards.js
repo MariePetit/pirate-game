@@ -23,7 +23,6 @@ const batchImport = async (batch, name) => {
 
     await db.collection(name).insertMany(filteredBatch);
   } catch (err) {
-    console.log("CAP WE GOT AN ERROR", err);
   } finally {
     client.close();
   }
