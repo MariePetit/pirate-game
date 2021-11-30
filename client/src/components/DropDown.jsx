@@ -26,7 +26,7 @@ const DropDown = () => {
   const openDropDown = () => {
     const DropDown = document.getElementById("dropDownId");
 
-    DropDown.style.height = "380px";
+    DropDown.style.height = "255px";
   };
 
   const closeDropDown = () => {
@@ -77,7 +77,7 @@ const DropDown = () => {
               <GiSmallFishingSailboat style={{ width: size, height: size }} />
             }
           />
-          <DropDownItem
+          {/* <DropDownItem
             disabled={!user}
             title="Settings"
             link="settings"
@@ -92,7 +92,7 @@ const DropDown = () => {
             title="About"
             link="about"
             icon={<BsInfoSquareFill style={{ width: size, height: size }} />}
-          />
+          /> */}
           <li>
             <LogOutButton
               onClick={handleLogOut}

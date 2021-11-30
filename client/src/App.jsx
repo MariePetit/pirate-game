@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import styled from "styled-components";
 
 import RandomCard from "./components/RandomCard";
 import HomePage from "./pages/HomePage";
@@ -16,7 +17,7 @@ import IntroPage from "./pages/IntroPage";
 
 const App = () => {
   return (
-    <>
+    <Wrapper>
       <GlobalStyle />
       <Router>
         <Switch>
@@ -59,8 +60,13 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-    </>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
 
 export default App;

@@ -19,7 +19,8 @@ span {
 *:after {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Anaheim', sans-serif;
+  font-family: 'ABeeZee';
+
   
 }
 

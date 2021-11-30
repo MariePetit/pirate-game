@@ -7,12 +7,19 @@ import { StatsContext } from "../components/StatsContext";
 import CrewMate from "../components/CrewMate";
 import OwnedMapCard from "../components/OwnedMapCard";
 import GoldAmountModal from "../modals/GoldAmountModal";
+import seaView from "../assets/seaView.jpg";
+
+import pirateImg from "../assets/023-pirate-21.png";
+import energyImg from "../assets/042-lighting.png";
+import goldImg from "../assets/033-treasure.png";
+import healthImg from "../assets/044-heart.png";
+import moralImg from "../assets/046-smiley.png";
+import shipImg from "../assets/039-pirate-ship-2.png";
 
 const Pirate = () => {
   const history = useHistory();
   const [crewStats, setCrewStats] = useState({});
   const [totalStats, setTotalStats] = useState({});
-  const [isHealing, setIsHealing] = useState(false);
 
   const { user, alivePirate, setAlivePirate } = useContext(UserContext);
   const { state, setState, setChosenMap, chosenMap } = useContext(StatsContext);
@@ -99,64 +106,149 @@ const Pirate = () => {
       modal.style.opacity = "1";
     }
   };
-
+  console.log(alivePirate);
   return (
     <>
       <GoldAmountModal
         handleStartGame={handleStartGame}
         alivePirate={alivePirate}
       />
-      <Wrapper>
-        {alivePirate.boat ? (
-          <PirateWrapper>
-            <Name>{alivePirate.name}</Name>
-            <Info>
-              <InfoItem> Has survived {alivePirate.age} days at sea</InfoItem>
-              <InfoItem>Gold: {alivePirate.gold}</InfoItem>
-              <InfoItem>
-                Energy: {totalStats.energy} / {alivePirate.totalEnergy}
-                <span> -- {crewStats.energy} energy from crew mates</span>{" "}
-              </InfoItem>
-              <InfoItem>
-                Moral: {totalStats.moral} / {alivePirate.totalMoral}
-                <span> -- {crewStats.moral} moral from crew mates</span>{" "}
-              </InfoItem>
-              <InfoItem>
-                Health: {totalStats.health} / {alivePirate.boat.totalHealth}
-              </InfoItem>
-            </Info>
-            <BoatWrapper>
-              <Name>{alivePirate.boat.boatName}</Name>
-              <CrewWrapper>
-                {alivePirate.boat.crew.length > 0 &&
-                  alivePirate.boat.crew.map((crewMate, index) => {
-                    return <CrewMate key={index} crewMate={crewMate} />;
-                  })}
-              </CrewWrapper>
-            </BoatWrapper>
-            <MapsWrapper>
-              {alivePirate.treasureMaps.length > 0 &&
-                alivePirate.treasureMaps.map((map, index) => {
-                  return (
-                    <OwnedMapCard
-                      key={index}
-                      map={map}
-                      handleSetGoldAmount={handleSetGoldAmount}
-                    />
-                  );
-                })}
-            </MapsWrapper>
-          </PirateWrapper>
-        ) : (
-          <div>Loading...</div>
-        )}
+      <Wrapper bgImage={seaView}>
+        <Fade>
+          {alivePirate.boat ? (
+            <PirateWrapper>
+              <PageInfo>Pirate's Info</PageInfo>
+              <RopeWrapper>
+                <Rope />
+                <Rope />
+              </RopeWrapper>
+              <BoxLayout>
+                <Info>
+                  <InfoItem>
+                    Has survived {alivePirate.age} days at sea
+                  </InfoItem>
+                  <InfoItem>
+                    <IconImg src={energyImg} />
+                    Energy: {totalStats.energy} / {alivePirate.totalEnergy}
+                    <span>-- {crewStats.energy} energy from crew mates</span>
+                  </InfoItem>
+                  <InfoItem>
+                    <IconImg src={moralImg} />
+                    Moral: {totalStats.moral} / {alivePirate.totalMoral}
+                    <span> -- {crewStats.moral} moral from crew mates</span>
+                  </InfoItem>
+                  <InfoItem>
+                    <IconImg src={healthImg} />
+                    Health: {totalStats.health} / {alivePirate.boat.totalHealth}
+                  </InfoItem>
+                </Info>
+              </BoxLayout>
+              <RopeWrapper>
+                <Rope />
+                <Rope />
+                <Rope />
+              </RopeWrapper>
+              <PirateInfo>
+                <div style={{ marginBottom: "15px" }}>
+                  <IconImg src={pirateImg} />
+                  <Name>{alivePirate.name}</Name>
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <IconImg src={goldImg} />
+                  <Name>{alivePirate.gold} gold in your treasury</Name>
+                </div>
+                <BoatWrapper>
+                  <IconImg src={shipImg} />
+                  <Name>{alivePirate.boat.boatName}</Name>
+                  <CrewWrapper>
+                    {alivePirate.boat.crew.length > 0 &&
+                      alivePirate.boat.crew.map((crewMate, index) => {
+                        return <CrewMate key={index} crewMate={crewMate} />;
+                      })}
+                  </CrewWrapper>
+                </BoatWrapper>
+              </PirateInfo>
+              <RopeWrapper>
+                <Rope />
+                <Rope />
+              </RopeWrapper>
+              <TreasureMapWrapper>
+                {alivePirate.treasureMaps.length > 0
+                  ? alivePirate.treasureMaps.map((map, index) => {
+                      return (
+                        <OwnedMapCard
+                          key={index}
+                          map={map}
+                          handleSetGoldAmount={handleSetGoldAmount}
+                        />
+                      );
+                    })
+                  : "Purchase some maps to see them appear here"}
+              </TreasureMapWrapper>
+            </PirateWrapper>
+          ) : (
+            <PirateWrapper>
+              <LoadingWrapper>Loading...</LoadingWrapper>
+            </PirateWrapper>
+          )}
+        </Fade>
       </Wrapper>
     </>
   );
 };
 
+const LoadingWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 25px;
+  color: white;
+`;
+
+const BoxLayout = styled.div`
+  text-shadow: 2px 2px 9px black;
+  background: rgb(87, 41, 2);
+  border: 4px solid rgb(138, 117, 100);
+  border-radius: 5px;
+  width: 80%;
+  margin-left: 10%;
+  padding: 3%;
+  color: white;
+`;
+
+const TreasureMapWrapper = styled(BoxLayout)`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const PageInfo = styled(BoxLayout)`
+  padding: 5%;
+
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const PirateInfo = styled(BoxLayout)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const IconImg = styled.img`
+  width: 30px;
+  vertical-align: top;
+  margin-top: -6px;
+  margin-right: 5px;
+`;
+
 const InfoItem = styled.li`
-  transition: 200ms ease-in-out;
+  margin-top: 6px;
+  padding: 4px;
   span {
     font-size: 12px;
     color: gray;
@@ -166,6 +258,9 @@ const Info = styled.ul`
   margin: 0;
   padding: 0;
   list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const MapsWrapper = styled.div`
@@ -174,12 +269,45 @@ const MapsWrapper = styled.div`
   padding: 10px;
 `;
 
+const RopeWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+const Rope = styled.div`
+  background: url("https://public.agriconomie.com/imgbin_rope-euclidean-drawing-png.png");
+  background-size: cover;
+  height: 100px;
+  width: 10px;
+`;
+
 const BoatWrapper = styled.div``;
 const CrewWrapper = styled.div``;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  background: ${({ bgImage }) => `url(${bgImage})`};
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+`;
 
-const PirateWrapper = styled.div``;
+const Fade = styled.div`
+  height: 100%;
+  background: rgb(0, 0, 0, 0.5);
+`;
+const PirateWrapper = styled.div`
+  width: 90%;
+  height: 100%;
+  overflow: auto;
+  margin-left: 5%;
+  padding: 2%;
+  background: rgb(255, 255, 255, 0.4);
+  border-left: 5px solid rgb(87, 41, 2);
+  border-right: 5px solid rgb(87, 41, 2);
+`;
 
-const Name = styled.div``;
+const Name = styled.span`
+  margin: 2px;
+`;
 
 export default Pirate;

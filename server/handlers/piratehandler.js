@@ -92,7 +92,7 @@ const ChangePirateStats = async (req, res) => {
     let pirate = user.pirates.filter(
       (pirate) => pirate.pirateId === pirateId
     )[0];
-
+    console.log(pirate);
     const updatedPirate = updateStats(pirate, newStats);
 
     await db
