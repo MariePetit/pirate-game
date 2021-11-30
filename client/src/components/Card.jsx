@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 
 import { UserContext } from "./UserContext";
 import { StatsContext } from "./StatsContext";
+import { updatePirateAfterWin } from "./updatePirateAfterWin";
 
 const Card = ({
   card,
@@ -27,32 +28,24 @@ const Card = ({
     hasWon,
     setHasWon,
   } = useContext(StatsContext);
-  const { alivePirate, setAlivePirate } = useContext(UserContext);
+  const { alivePirate, setAlivePirate, user, update, setUpdate } =
+    useContext(UserContext);
   const history = useHistory();
   const { name, description, leftChoice, rightChoice, secondAction } = card;
 
   const handleStatChanges = (choice) => {
     if (hasWon && choice.text === "Pirate's life for me!") {
-      setTimeout(() => {
-        const newTreasureMapArray = alivePirate.treasureMaps.filter(
-          (map) => map.id !== chosenMap.id
-        );
-        setAlivePirate({
-          ...alivePirate,
-          age: alivePirate.age + tick,
-          boat: { ...alivePirate.boat, health: state.health },
-          gold: alivePirate.gold + state.gold,
-          energy:
-            state.energy > alivePirate.energy
-              ? alivePirate.energy
-              : state.energy,
-          moral:
-            state.moral > alivePirate.moral ? alivePirate.moral : state.moral,
-          treasureMaps: newTreasureMapArray,
-        });
-        setHasWon(false);
-        history.push("/pirate");
-      }, 500);
+      updatePirateAfterWin(
+        state,
+        tick,
+        chosenMap,
+        alivePirate,
+        user,
+        update,
+        setUpdate
+      );
+      history.push("/pirate");
+      setHasWon(false);
     }
     if (hasLost) {
       setSingleCard({});
