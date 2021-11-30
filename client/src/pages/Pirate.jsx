@@ -15,6 +15,7 @@ import goldImg from "../assets/033-treasure.png";
 import healthImg from "../assets/044-heart.png";
 import moralImg from "../assets/046-smiley.png";
 import shipImg from "../assets/039-pirate-ship-2.png";
+import FallOpen from "../animations/FallOpen";
 
 const Pirate = () => {
   const history = useHistory();
@@ -106,7 +107,6 @@ const Pirate = () => {
       modal.style.opacity = "1";
     }
   };
-  console.log(alivePirate);
   return (
     <>
       <GoldAmountModal
@@ -118,73 +118,81 @@ const Pirate = () => {
           {alivePirate.boat ? (
             <PirateWrapper>
               <PageInfo>Pirate's Info</PageInfo>
-              <RopeWrapper>
-                <Rope />
-                <Rope />
-              </RopeWrapper>
-              <BoxLayout>
-                <Info>
-                  <InfoItem>
-                    Has survived {alivePirate.age} days at sea
-                  </InfoItem>
-                  <InfoItem>
-                    <IconImg src={energyImg} />
-                    Energy: {totalStats.energy} / {alivePirate.totalEnergy}
-                    <span>-- {crewStats.energy} energy from crew mates</span>
-                  </InfoItem>
-                  <InfoItem>
-                    <IconImg src={moralImg} />
-                    Moral: {totalStats.moral} / {alivePirate.totalMoral}
-                    <span> -- {crewStats.moral} moral from crew mates</span>
-                  </InfoItem>
-                  <InfoItem>
-                    <IconImg src={healthImg} />
-                    Health: {totalStats.health} / {alivePirate.boat.totalHealth}
-                  </InfoItem>
-                </Info>
-              </BoxLayout>
-              <RopeWrapper>
-                <Rope />
-                <Rope />
-                <Rope />
-              </RopeWrapper>
-              <PirateInfo>
-                <div style={{ marginBottom: "15px" }}>
-                  <IconImg src={pirateImg} />
-                  <Name>{alivePirate.name}</Name>
-                </div>
-                <div style={{ marginBottom: "15px" }}>
-                  <IconImg src={goldImg} />
-                  <Name>{alivePirate.gold} gold in your treasury</Name>
-                </div>
-                <BoatWrapper>
-                  <IconImg src={shipImg} />
-                  <Name>{alivePirate.boat.boatName}</Name>
-                  <CrewWrapper>
-                    {alivePirate.boat.crew.length > 0 &&
-                      alivePirate.boat.crew.map((crewMate, index) => {
-                        return <CrewMate key={index} crewMate={crewMate} />;
-                      })}
-                  </CrewWrapper>
-                </BoatWrapper>
-              </PirateInfo>
-              <RopeWrapper>
-                <Rope />
-                <Rope />
-              </RopeWrapper>
-              <TreasureMapWrapper>
-                {alivePirate.treasureMaps.length > 0
-                  ? alivePirate.treasureMaps.map((map, index) => {
-                      return (
-                        <OwnedMapCard
-                          key={index}
-                          map={map}
-                          handleSetGoldAmount={handleSetGoldAmount}
-                        />
-                      );
-                    })
-                  : "Purchase some maps to see them appear here"}
-              </TreasureMapWrapper>
+              <FallOpen delay="0ms">
+                <RopeWrapper>
+                  <Rope />
+                  <Rope />
+                </RopeWrapper>
+                <BoxLayout>
+                  <Info>
+                    <InfoItem>
+                      Has survived {alivePirate.age} days at sea
+                    </InfoItem>
+                    <InfoItem>
+                      <IconImg src={energyImg} />
+                      Energy: {totalStats.energy} / {alivePirate.totalEnergy}
+                      <span>-- {crewStats.energy} energy from crew mates</span>
+                    </InfoItem>
+                    <InfoItem>
+                      <IconImg src={moralImg} />
+                      Moral: {totalStats.moral} / {alivePirate.totalMoral}
+                      <span> -- {crewStats.moral} moral from crew mates</span>
+                    </InfoItem>
+                    <InfoItem>
+                      <IconImg src={healthImg} />
+                      Health: {totalStats.health} /{" "}
+                      {alivePirate.boat.totalHealth}
+                    </InfoItem>
+                  </Info>
+                </BoxLayout>
+              </FallOpen>
+
+              <FallOpen delay="150ms">
+                <RopeWrapper>
+                  <Rope />
+                  <Rope />
+                  <Rope />
+                </RopeWrapper>
+                <PirateInfo>
+                  <div style={{ marginBottom: "15px" }}>
+                    <IconImg src={pirateImg} />
+                    <Name>{alivePirate.name}</Name>
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <IconImg src={goldImg} />
+                    <Name>{alivePirate.gold} gold in your treasury</Name>
+                  </div>
+                  <BoatWrapper>
+                    <IconImg src={shipImg} />
+                    <Name>{alivePirate.boat.boatName}</Name>
+                    <CrewWrapper>
+                      {alivePirate.boat.crew.length > 0 &&
+                        alivePirate.boat.crew.map((crewMate, index) => {
+                          return <CrewMate key={index} crewMate={crewMate} />;
+                        })}
+                    </CrewWrapper>
+                  </BoatWrapper>
+                </PirateInfo>
+              </FallOpen>
+              <FallOpen delay="400ms">
+                <RopeWrapper>
+                  <Rope />
+                  <Rope />
+                </RopeWrapper>
+                <TreasureMapWrapper>
+                  {alivePirate.treasureMaps.length > 0
+                    ? alivePirate.treasureMaps.map((map, index) => {
+                        return (
+                          <OwnedMapCard
+                            key={index}
+                            map={map}
+                            handleSetGoldAmount={handleSetGoldAmount}
+                          />
+                        );
+                      })
+                    : "Purchase some maps to see them appear here"}
+                </TreasureMapWrapper>
+              </FallOpen>
             </PirateWrapper>
           ) : (
             <PirateWrapper>
@@ -221,6 +229,7 @@ const TreasureMapWrapper = styled(BoxLayout)`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  transition: 200ms ease;
 `;
 
 const PageInfo = styled(BoxLayout)`

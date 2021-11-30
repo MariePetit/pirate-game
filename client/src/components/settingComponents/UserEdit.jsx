@@ -82,7 +82,6 @@ const UserEdit = ({ infoValue, infoKey, handleEditFunction }) => {
       }
     }
 
-    console.log(errors);
     if (errors.length === 0) {
       setChangeErrors([]);
       setMakingChanges(true);

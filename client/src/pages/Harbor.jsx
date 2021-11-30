@@ -8,7 +8,7 @@ const Harbor = () => {
   const [mapsOnSale, setMapsOnSale] = useState([]);
   const [purchasedMap, setPurchasedMap] = useState(null);
 
-  const { alivePirate, setAlivePirate } = useContext(UserContext);
+  const { alivePirate, setAlivePirate, user } = useContext(UserContext);
 
   useEffect(() => {
     if (purchasedMap) {
@@ -44,11 +44,18 @@ const Harbor = () => {
   };
 
   const handlePurchase = ({ map }) => {
-    setAlivePirate({
-      ...alivePirate,
-      gold: alivePirate.gold - map.cost,
-      treasureMaps: [...alivePirate.treasureMaps, map],
-    });
+    fetch(`/pirate/add/treasuremap/${user._id}/${alivePirate.pirateId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ map, newGold: alivePirate.gold - map.cost }),
+    }).then((res) => res.json().then((data) => {}));
+    // setAlivePirate({
+    //   ...alivePirate,
+    //   gold: alivePirate.gold - map.cost,
+    //   treasureMaps: [...alivePirate.treasureMaps, map],
+    // });
     setPurchasedMap(map);
   };
   return (
