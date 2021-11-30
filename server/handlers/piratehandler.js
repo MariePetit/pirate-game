@@ -92,7 +92,6 @@ const ChangePirateStats = async (req, res) => {
     let pirate = user.pirates.filter(
       (pirate) => pirate.pirateId === pirateId
     )[0];
-    console.log(pirate);
     const updatedPirate = updateStats(pirate, newStats);
 
     await db
@@ -255,10 +254,44 @@ const RemoveTreasureMap = async (req, res) => {
   }
 };
 
+const UpdatePirateAfterWin = async (req, res) => {
+  const { _id, pirateId } = req.params;
+  const { age, gold, energy, moral, health } = req.body;
+  const client = new MongoClient(MONGO_URI, options);
+
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const db = client.db("Pirate-Looter");
+    const query = { _id, "pirates.pirateId": pirateId };
+    const newValues = {
+      $set: {
+        "pirates.$.age": age,
+        "pirates.$.gold": gold,
+        "pirates.$.energy": energy,
+        "pirates.$.moral": moral,
+        "pirates.$.boat.health": health,
+      },
+    };
+
+    const result = await db.collection("users").updateOne(query, newValues);
+
+    console.log(result.modifiedCount, result.matchedCount);
+
+    res.status(200).json({ status: 200, message: "changed successfully" });
+  } catch (err) {
+  } finally {
+    client.close();
+    console.log("disconnected");
+  }
+};
+
 module.exports = {
   AddNewPirate,
   ChangePirateStats,
   ManageCrewMates,
   AddTreasureMap,
   RemoveTreasureMap,
+  UpdatePirateAfterWin,
 };

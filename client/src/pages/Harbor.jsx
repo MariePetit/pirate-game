@@ -8,7 +8,8 @@ const Harbor = () => {
   const [mapsOnSale, setMapsOnSale] = useState([]);
   const [purchasedMap, setPurchasedMap] = useState(null);
 
-  const { alivePirate, setAlivePirate, user } = useContext(UserContext);
+  const { alivePirate, setAlivePirate, user, update, setUpdate } =
+    useContext(UserContext);
 
   useEffect(() => {
     if (purchasedMap) {
@@ -50,12 +51,8 @@ const Harbor = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ map, newGold: alivePirate.gold - map.cost }),
-    }).then((res) => res.json().then((data) => {}));
-    // setAlivePirate({
-    //   ...alivePirate,
-    //   gold: alivePirate.gold - map.cost,
-    //   treasureMaps: [...alivePirate.treasureMaps, map],
-    // });
+    }).then(() => setUpdate(!update));
+
     setPurchasedMap(map);
   };
   return (
