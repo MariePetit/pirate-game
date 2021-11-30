@@ -1,11 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const { getAllCards } = require("./handlers/cardHandlers");
+const { getAllCards, addACard } = require("./handlers/cardHandlers");
 const {
   AddNewPirate,
   ChangePirateStats,
   ManageCrewMates,
+  AddTreasureMap,
+  RemoveTreasureMap,
+  UpdatePirateAfterWin,
 } = require("./handlers/piratehandler");
 const {
   EditUserById,
@@ -26,7 +29,8 @@ express()
 
   //GET - getting all cards
   .get(`/cards`, getAllCards)
-
+  //PUT - create a new card
+  .put(`/cards/:cardType`, addACard)
   //GET - getting all users
   .get(`/users`, GetAllUsers)
   //GET -getting user by id
@@ -50,6 +54,12 @@ express()
   .patch(`/pirate/stats/:_id/pirateId/:pirateId`, ChangePirateStats)
   //PATCH - adding/removing crew mates
   .patch(`/pirate/newCrewMate/:_id/pirateId/:pirateId`, ManageCrewMates)
+
+  .patch(`/pirate/add/treasuremap/:_id/:pirateId`, AddTreasureMap)
+
+  .patch(`/pirate/remove/treasuremap/:_id/:pirateId`, RemoveTreasureMap)
+
+  .patch(`/pirate/winTripUpdate/:_id/:pirateId`, UpdatePirateAfterWin)
 
   .listen(PORT, () => {
     console.log(`listening on port ${PORT}`);

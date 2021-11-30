@@ -5,6 +5,7 @@ export const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [alivePirate, setAlivePirate] = useState({});
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     if (user.pirates) {
@@ -26,10 +27,10 @@ export const UserProvider = ({ children }) => {
         })
       );
     }
-  }, []);
+  }, [update]);
   return (
     <UserContext.Provider
-      value={{ user, setUser, alivePirate, setAlivePirate }}
+      value={{ user, setUser, alivePirate, setAlivePirate, update, setUpdate }}
     >
       {children}
     </UserContext.Provider>

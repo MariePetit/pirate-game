@@ -59,7 +59,6 @@ const IntroPage = () => {
     }
   };
 
-  console.log(error);
   return (
     <Wrapper>
       <GameTitle>Welcome to Pirate Looter</GameTitle>

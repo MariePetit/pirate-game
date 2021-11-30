@@ -26,7 +26,7 @@ const HomePage = () => {
   return (
     <Wrapper>
       <List>
-        <ListItem title="Home" link="" />
+        {/* <ListItem title="Home" link="" /> */}
         <ListItem
           disabled={!user.userName}
           title="Pirate"
@@ -47,7 +47,7 @@ const HomePage = () => {
             <GiSmallFishingSailboat style={{ width: size, height: size }} />
           }
         />
-        <ListItem
+        {/* <ListItem
           disabled={!user.userName}
           title="Settings"
           link="settings"
@@ -62,7 +62,7 @@ const HomePage = () => {
           title="About"
           link="about"
           icon={<BsInfoSquareFill style={{ width: size, height: size }} />}
-        />
+        /> */}
       </List>
     </Wrapper>
   );
