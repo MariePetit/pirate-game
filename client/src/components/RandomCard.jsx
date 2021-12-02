@@ -11,7 +11,7 @@ import treasureMapImg from "../assets/treasureMap.png";
 
 const RandomCard = () => {
   const [singleCard, setSingleCard] = useState({});
-  const [tick, setTick] = useState(10);
+  const [tick, setTick] = useState(0);
   const [adventureLength, setAdventureLength] = useState(null);
 
   const {
@@ -26,12 +26,11 @@ const RandomCard = () => {
   } = useContext(StatsContext);
   const { eventCards, endCards } = useContext(CardContext);
 
-  //COMMENTED OUT FOR STYLE EDITING REASONS
-  // useEffect(() => {
-  //   if (chosenMap) {
-  //     setAdventureLength(chosenMap.tripLength);
-  //   }
-  // }, [chosenMap]);
+  useEffect(() => {
+    if (chosenMap) {
+      setAdventureLength(chosenMap.tripLength);
+    }
+  }, [chosenMap]);
 
   useEffect(() => {
     if (hasLost) {
@@ -57,8 +56,7 @@ const RandomCard = () => {
       if (singleCard?.name === eventCards[randomNum]?.name) {
         randomNum = Math.round(Math.random() * eventCards.length);
       }
-      if (tick === Math.floor(adventureLength / 2)) {
-        // if (tick === Math.floor(chosenMap.tripLength / 2)) {
+      if (tick === Math.floor(chosenMap.tripLength / 2)) {
         setSingleCard({
           name: "Burried Treasure!!",
           id: randomNum,
