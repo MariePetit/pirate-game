@@ -34,6 +34,7 @@ const StatDisplay = ({
 
 const Wrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const Stat = styled.div`
@@ -49,7 +50,7 @@ const Stat = styled.div`
   background: ${({ color }) => {
     return color;
   }};
-  box-shadow: 0 0 20px 3px gray;
+  box-shadow: 0 0 9px 0.5px black;
   transition: 0.3s ease-in-out;
   width: ${({ length }) => {
     return Math.sign(length) === 1 ? `${length}px` : "0px";
@@ -60,9 +61,10 @@ const HoverChange = styled.div`
   width: ${({ size }) => (size >= 40 ? "25px" : `${size}px`)};
   height: ${({ size }) => (size >= 40 ? "25px" : `${size}px`)};
   border-radius: 50px;
-  margin-left: 5px;
+  margin-left: 10px;
+  box-shadow: 0 0 3px black;
   background: ${({ color }) =>
-    !isNaN(color) && color === 1 ? "green" : "red"};
+    !isNaN(color) && color === 1 ? "#3f8531" : "#a84032"};
 `;
 
 export default StatDisplay;
