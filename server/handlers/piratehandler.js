@@ -177,6 +177,37 @@ const ManageCrewMates = async (req, res) => {
   }
 };
 
+const RemoveDeadPirate = async (req, res) => {
+  const { _id, pirateId } = req.params;
+
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const query = { _id, "pirates.pirateId": pirateId };
+    const newValue = { $set: { "pirates.$.isDead": true } };
+
+    const db = client.db("Pirate-Looter");
+
+    const result = await db.collection("users").updateOne(query, newValue);
+
+    if (result.modifiedCount === 1) {
+      res
+        .status(202)
+        .json({ status: 202, message: "pirate is no longer alive" });
+    }
+  } catch (err) {
+    res.status(500).json({
+      status: 500,
+      message: "something happened internally",
+      error: err,
+    });
+  } finally {
+    client.close();
+  }
+};
+
 const AddTreasureMap = async (req, res) => {
   const { _id, pirateId } = req.params;
   const { map, newGold } = req.body;
@@ -291,6 +322,7 @@ module.exports = {
   AddNewPirate,
   ChangePirateStats,
   ManageCrewMates,
+  RemoveDeadPirate,
   AddTreasureMap,
   RemoveTreasureMap,
   UpdatePirateAfterWin,

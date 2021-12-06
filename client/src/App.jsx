@@ -14,6 +14,7 @@ import Forum from "./pages/Forum";
 import Pirate from "./pages/Pirate";
 import DropDown from "./components/DropDown";
 import IntroPage from "./pages/IntroPage";
+import Graveyard from "./pages/Graveyard";
 
 const App = () => {
   return (
@@ -28,7 +29,6 @@ const App = () => {
             <IntroPage />
           </Route>
           <Route exact path="/game">
-            <DropDown />
             <RandomCard />
           </Route>
           <Route exact path="/harbor">
@@ -57,6 +57,10 @@ const App = () => {
           <Route exact path="/forum">
             <DropDown />
             <Forum />
+          </Route>
+          <Route exact path="/graveyard">
+            <DropDown />
+            <Graveyard />
           </Route>
         </Switch>
       </Router>

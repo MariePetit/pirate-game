@@ -7,6 +7,7 @@ import {
   GiPirateCaptain,
   GiSmallFishingSailboat,
   GiBlackBook,
+  GiPirateGrave,
 } from "react-icons/gi";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { BsFillGearFill, BsInfoSquareFill } from "react-icons/bs";
@@ -47,6 +48,14 @@ const HomePage = () => {
             <GiSmallFishingSailboat style={{ width: size, height: size }} />
           }
         />
+        {user?.pirates?.filter((pirate) => pirate.isDead).length > 0 && (
+          <ListItem
+            disabled={!user.userName}
+            title="Graveyard"
+            link="graveyard"
+            icon={<GiPirateGrave style={{ width: size, height: size }} />}
+          />
+        )}
         {/* <ListItem
           disabled={!user.userName}
           title="Settings"

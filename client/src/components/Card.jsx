@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { StatsContext } from "./StatsContext";
 import { updatePirateAfterWin } from "./updatePirateAfterWin";
+import { udpatePirateAfterLoss } from "./updatePirateAfterLoss";
 
 const Card = ({
   card,
@@ -49,10 +50,8 @@ const Card = ({
       setHasWon(false);
     }
     if (hasLost) {
-      setSingleCard({});
-      setState(initialState);
-      alert(`You have survived ${tick} days. A new game will now begin...`);
-      setTick(0);
+      udpatePirateAfterLoss(user, alivePirate, chosenMap, update, setUpdate);
+      history.push("/graveyard");
       setHasLost(false);
     } else {
       checkForSpecialState(choice);
@@ -87,7 +86,7 @@ const Card = ({
         break;
       }
       case "devineSight": {
-        setIsCursed(true);
+        setIsCursed(false);
         break;
       }
     }

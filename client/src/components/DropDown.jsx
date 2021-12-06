@@ -10,6 +10,7 @@ import {
   GiBlackBook,
   GiPirateFlag,
   GiAnchor,
+  GiPirateGrave,
 } from "react-icons/gi";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { BsFillGearFill, BsInfoSquareFill } from "react-icons/bs";
@@ -77,6 +78,14 @@ const DropDown = () => {
               <GiSmallFishingSailboat style={{ width: size, height: size }} />
             }
           />
+          {user?.pirates?.filter((pirate) => pirate.isDead).length > 0 && (
+            <DropDownItem
+              disabled={!user.userName}
+              title="Graveyard"
+              link="graveyard"
+              icon={<GiPirateGrave style={{ width: size, height: size }} />}
+            />
+          )}
           {/* <DropDownItem
             disabled={!user}
             title="Settings"

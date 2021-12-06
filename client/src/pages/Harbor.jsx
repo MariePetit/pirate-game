@@ -1,109 +1,84 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+
 import { UserContext } from "../components/UserContext";
-import ForSaleMapCard from "../components/ForSaleMapCard";
+import MapSeller from "../components/Harbor/MapSeller";
+import SlideInFromRight from "../animations/SlideInFromRight";
 
 const Harbor = () => {
-  const [mapsOnSale, setMapsOnSale] = useState([]);
-  const [purchasedMap, setPurchasedMap] = useState(null);
+  const [tabShown, setTabShown] = useState("none");
 
   const { alivePirate, setAlivePirate, user, update, setUpdate } =
     useContext(UserContext);
 
-  useEffect(() => {
-    if (purchasedMap) {
-      setTimeout(() => {
-        setPurchasedMap(null);
-      }, 5000);
-    }
-  }, [purchasedMap]);
-
-  const ClosePurchasePopUp = () => {
-    setPurchasedMap(null);
-  };
-
-  useEffect(() => {
-    let maps = [];
-
-    for (let i = 1; i < 6; i++) {
-      let map = createTreasureMap(i);
-      maps.push(map);
-    }
-    setMapsOnSale(maps);
-  }, []);
-
-  const createTreasureMap = (difficulty) => {
-    let trasureMap = {
-      name: `level ${difficulty} treasure map`,
-      cost: Math.round(25 * difficulty * 1.25),
-      sold: Math.round((25 * difficulty) / 2),
-      loot: 100 * (difficulty * 2),
-      tripLength: Math.round(3 * difficulty * 1.5),
-    };
-    return trasureMap;
-  };
-
-  const handlePurchase = ({ map }) => {
-    fetch(`/pirate/add/treasuremap/${user._id}/${alivePirate.pirateId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ map, newGold: alivePirate.gold - map.cost }),
-    }).then(() => setUpdate(!update));
-
-    setPurchasedMap(map);
-  };
+  if (!alivePirate) {
+    return <Wrapper>create a pirate first.</Wrapper>;
+  }
   return (
     <>
-      {purchasedMap && (
-        <MapPurchaseConfirmation onClick={ClosePurchasePopUp}>
-          Purchase Successful
-        </MapPurchaseConfirmation>
-      )}
       <Wrapper>
-        {mapsOnSale.length > 0 &&
-          mapsOnSale.map((map) => {
-            return (
-              <ForSaleMapCard
-                key={map.name}
-                map={map}
-                userGold={alivePirate.gold}
-                handlePurchase={handlePurchase}
-              />
-            );
-          })}
+        {tabShown === "none" && (
+          <>
+            <Tippy content="visit merchant">
+              <MerchantButton
+                onClick={() => {
+                  setTabShown("merchant");
+                }}
+              >
+                Merchant
+              </MerchantButton>
+            </Tippy>
+          </>
+        )}
+        <FilterWrapper>
+          <SlideInFromRight state={tabShown === "merchant"}>
+            <ContentWrapper>
+              <MapSeller setTabShown={setTabShown} />
+            </ContentWrapper>
+          </SlideInFromRight>
+        </FilterWrapper>
       </Wrapper>
     </>
   );
 };
 
-const MapPurchaseConfirmation = styled.button`
-  outline: none;
-  font-size: 20px;
-  cursor: pointer;
+const MerchantButton = styled.button`
   position: absolute;
-  top: 200px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 18px;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%);
-  width: 300px;
-  height: 200px;
-  border: 2px solid green;
-  background: rgb(155, 222, 144);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  transform: translate(-50%, -50%);
+  transition: 200ms ease;
+  &:hover {
+    opacity: 0.8;
+    transform: translate(-52%, -59%);
+  }
+`;
+const Wrapper = styled.div`
+  position: relative;
+  background: url("http://michaelmay.us/12blog/03/0301-portroyal.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  overflow: hidden;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  padding: 20px;
-  background: rgb(94, 56, 25);
+const FilterWrapper = styled.div`
+  height: 100%;
+  background: rgb(0, 0, 0, 0.6);
+`;
+
+const ContentWrapper = styled.div`
+  background: rgb(255, 255, 255, 0.3);
+  height: 100%;
+  width: 90%;
+  margin-left: 5%;
 `;
 
 export default Harbor;
