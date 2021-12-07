@@ -27,7 +27,7 @@ const DropDown = () => {
   const openDropDown = () => {
     const DropDown = document.getElementById("dropDownId");
 
-    DropDown.style.height = "255px";
+    DropDown.style.height = "305px";
   };
 
   const closeDropDown = () => {
@@ -107,7 +107,9 @@ const DropDown = () => {
               onClick={handleLogOut}
               disabled={!localStorage.getItem("userLoggedIn")}
             >
-              <FiLogOut />
+              <span style={{ marginLeft: "10px" }}>
+                <FiLogOut />
+              </span>
               Sign Out
             </LogOutButton>
           </li>
@@ -122,7 +124,8 @@ const LogOutButton = styled(NotStyledButton)`
   color: black;
   text-decoration: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 20px;
   font-weight: bold;
   font-size: 20px;
   padding: 10px 0px;
