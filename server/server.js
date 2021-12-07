@@ -54,7 +54,7 @@ express()
   //PATCH - change the pirate's stats
   .patch(`/pirate/stats/:_id/pirateId/:pirateId`, ChangePirateStats)
   //PATCH - adding/removing crew mates
-  .patch(`/pirate/newCrewMate/:_id/pirateId/:pirateId`, ManageCrewMates)
+  .patch(`/pirate/crewMate/:_id/`, ManageCrewMates)
 
   .patch(`/pirate/add/treasuremap/:_id/:pirateId`, AddTreasureMap)
 

@@ -24,12 +24,10 @@ const Pirate = () => {
   const history = useHistory();
   const [crewStats, setCrewStats] = useState({});
   const [totalStats, setTotalStats] = useState({});
-  const [count, setCount] = useState(0);
-  const [isHealing, setIsHealing] = useState(false);
 
   const { user, alivePirate, setAlivePirate, setUpdate, update } =
     useContext(UserContext);
-  const { state, setState, setChosenMap, chosenMap } = useContext(StatsContext);
+  const { setState, setChosenMap } = useContext(StatsContext);
 
   useEffect(() => {
     return () => {
@@ -81,9 +79,18 @@ const Pirate = () => {
         return total + crewMate.moral;
       }, 0);
 
-      const moral = crewMoral + alivePirate.moral;
-      const energy = crewEnergy + alivePirate.energy;
-      const health = alivePirate.boat.health;
+      const moral =
+        alivePirate.moral > alivePirate.totalMoral
+          ? alivePirate.totalMoral
+          : alivePirate.moral;
+      const energy =
+        alivePirate.energy > alivePirate.totalEnergy
+          ? alivePirate.totalEnergy
+          : alivePirate.energy;
+      const health =
+        alivePirate.boat.health > alivePirate.boat.totalHealth
+          ? alivePirate.boat.totalHealth
+          : alivePirate.boat.health;
       const gold = alivePirate.gold;
 
       setTotalStats({ moral, energy, health, gold });
@@ -199,12 +206,6 @@ const Pirate = () => {
                     <BoatWrapper>
                       <IconImg src={shipImg} />
                       <Name>{alivePirate.boat.boatName}</Name>
-                      <CrewWrapper>
-                        {alivePirate.boat.crew.length > 0 &&
-                          alivePirate.boat.crew.map((crewMate, index) => {
-                            return <CrewMate key={index} crewMate={crewMate} />;
-                          })}
-                      </CrewWrapper>
                     </BoatWrapper>
                   </PirateInfo>
                 </FallOpen>
@@ -227,6 +228,31 @@ const Pirate = () => {
                       : "Purchase some maps to see them appear here"}
                   </TreasureMapWrapper>
                 </FallOpen>
+                {alivePirate.boat.crew.length > 0 && (
+                  <FallOpen delay="650ms">
+                    <RopeWrapper>
+                      <Rope />
+                      <Rope />
+                    </RopeWrapper>
+                    <CrewWrapper>
+                      <Title>Crew</Title>
+                      <Crews>
+                        {alivePirate.boat.crew.length > 0 &&
+                          alivePirate.boat.crew.map((crewMate, index) => {
+                            return (
+                              <CrewMate
+                                user={user}
+                                update={update}
+                                setUpdate={setUpdate}
+                                key={index}
+                                crewMate={crewMate}
+                              />
+                            );
+                          })}
+                      </Crews>
+                    </CrewWrapper>
+                  </FallOpen>
+                )}
               </PirateWrapper>
             ) : (
               <PirateWrapper>
@@ -255,6 +281,13 @@ const Pirate = () => {
     </>
   );
 };
+
+const Title = styled.div`
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+`;
 
 const LoadingWrapper = styled.div`
   position: absolute;
@@ -300,6 +333,18 @@ const BoxLayout = styled.div`
   margin-left: 10%;
   padding: 3%;
   color: white;
+`;
+
+const CrewWrapper = styled(BoxLayout)`
+  padding: 15px;
+`;
+
+const Crews = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
 `;
 
 const AddPirateWrapper = styled(BoxLayout)`
@@ -373,7 +418,6 @@ const Rope = styled.div`
 `;
 
 const BoatWrapper = styled.div``;
-const CrewWrapper = styled.div``;
 const Wrapper = styled.div`
   background: ${({ bgImage }) => `url(${bgImage})`};
   background-repeat: no-repeat;
