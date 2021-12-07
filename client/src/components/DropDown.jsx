@@ -10,6 +10,7 @@ import {
   GiBlackBook,
   GiPirateFlag,
   GiAnchor,
+  GiPirateGrave,
 } from "react-icons/gi";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { BsFillGearFill, BsInfoSquareFill } from "react-icons/bs";
@@ -26,7 +27,7 @@ const DropDown = () => {
   const openDropDown = () => {
     const DropDown = document.getElementById("dropDownId");
 
-    DropDown.style.height = "255px";
+    DropDown.style.height = "305px";
   };
 
   const closeDropDown = () => {
@@ -77,6 +78,14 @@ const DropDown = () => {
               <GiSmallFishingSailboat style={{ width: size, height: size }} />
             }
           />
+          {user?.pirates?.filter((pirate) => pirate.isDead).length > 0 && (
+            <DropDownItem
+              disabled={!user.userName}
+              title="Graveyard"
+              link="graveyard"
+              icon={<GiPirateGrave style={{ width: size, height: size }} />}
+            />
+          )}
           {/* <DropDownItem
             disabled={!user}
             title="Settings"
@@ -98,7 +107,9 @@ const DropDown = () => {
               onClick={handleLogOut}
               disabled={!localStorage.getItem("userLoggedIn")}
             >
-              <FiLogOut />
+              <span style={{ marginLeft: "10px" }}>
+                <FiLogOut />
+              </span>
               Sign Out
             </LogOutButton>
           </li>
@@ -113,7 +124,8 @@ const LogOutButton = styled(NotStyledButton)`
   color: black;
   text-decoration: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 20px;
   font-weight: bold;
   font-size: 20px;
   padding: 10px 0px;

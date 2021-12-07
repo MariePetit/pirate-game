@@ -6,7 +6,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [alivePirate, setAlivePirate] = useState({});
   const [update, setUpdate] = useState(false);
-
   useEffect(() => {
     if (user.pirates) {
       const pirateInArray = user.pirates.filter(

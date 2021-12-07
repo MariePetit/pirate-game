@@ -6,6 +6,9 @@ import StatDisplay from "./StatDisplay";
 import { StatsContext } from "./StatsContext";
 import { CardContext } from "./CardContext";
 
+import oceanBg from "../assets/oceanBackground.jpg";
+import treasureMapImg from "../assets/treasureMap.png";
+
 const RandomCard = () => {
   const [singleCard, setSingleCard] = useState({});
   const [tick, setTick] = useState(0);
@@ -53,7 +56,6 @@ const RandomCard = () => {
       if (singleCard?.name === eventCards[randomNum]?.name) {
         randomNum = Math.round(Math.random() * eventCards.length);
       }
-
       if (tick === Math.floor(chosenMap.tripLength / 2)) {
         setSingleCard({
           name: "Burried Treasure!!",
@@ -86,76 +88,120 @@ const RandomCard = () => {
   };
 
   return (
-    <Wrapper>
-      <StatsWrapper>
-        <StatsItem>Day: {tick}</StatsItem>
-        <StatsItem>Trip day's left: {adventureLength}</StatsItem>
-        {singleCard && (
+    <Wrapper bgImg={oceanBg}>
+      <ImgFilter />
+      <GameWrapper>
+        {!singleCard.name ? (
+          <NewCardButton bgImg={treasureMapImg} onClick={getRandomCard}>
+            start
+          </NewCardButton>
+        ) : (
           <>
-            <StatDisplay
-              singleCard={singleCard}
-              type="Gold"
-              color="rgb(201, 133, 44)"
-            />{" "}
-            <StatDisplay
-              singleCard={singleCard}
-              type="Moral"
-              color="rgb(69, 133, 111)"
-            />{" "}
-            <StatDisplay
-              singleCard={singleCard}
-              type="Health"
-              color="rgb(148, 17, 3)"
-            />{" "}
-            <StatDisplay
-              singleCard={singleCard}
-              type="Energy"
-              color="rgb(186, 180, 0)"
-            />
+            <ContentWrapper>
+              {hasLost
+                ? singleCard?.name && (
+                    <Card
+                      tick={tick}
+                      setTick={setTick}
+                      getRandomCard={getRandomCard}
+                      card={singleCard}
+                      setSingleCard={setSingleCard}
+                      hasLost={hasLost}
+                      setHasLost={setHasLost}
+                    />
+                  )
+                : singleCard?.name && (
+                    <Card
+                      tick={tick}
+                      chosenMap={chosenMap}
+                      getRandomCard={getRandomCard}
+                      card={singleCard}
+                      setSingleCard={setSingleCard}
+                    />
+                  )}
+            </ContentWrapper>
+            <GameStats>
+              <TripStats>
+                <StatsItem>Day: {tick}</StatsItem>
+                <StatsItem>Trip day's left: {adventureLength}</StatsItem>
+              </TripStats>
+              {singleCard && (
+                <>
+                  <StatDisplay
+                    singleCard={singleCard}
+                    type="Gold"
+                    color="rgb(201, 133, 44)"
+                  />{" "}
+                  <StatDisplay
+                    singleCard={singleCard}
+                    type="Moral"
+                    color="rgb(69, 133, 111)"
+                  />{" "}
+                  <StatDisplay
+                    singleCard={singleCard}
+                    type="Health"
+                    color="rgb(148, 17, 3)"
+                  />{" "}
+                  <StatDisplay
+                    singleCard={singleCard}
+                    type="Energy"
+                    color="rgb(186, 180, 0)"
+                  />
+                </>
+              )}
+            </GameStats>
           </>
         )}
-      </StatsWrapper>
-      <ContentWrapper>
-        <NewCardButton onClick={getRandomCard}>New Card</NewCardButton>
-
-        {hasLost
-          ? singleCard?.name && (
-              <Card
-                tick={tick}
-                setTick={setTick}
-                getRandomCard={getRandomCard}
-                card={singleCard}
-                setSingleCard={setSingleCard}
-                hasLost={hasLost}
-                setHasLost={setHasLost}
-              />
-            )
-          : singleCard?.name && (
-              <Card
-                tick={tick}
-                chosenMap={chosenMap}
-                getRandomCard={getRandomCard}
-                card={singleCard}
-                setSingleCard={setSingleCard}
-              />
-            )}
-      </ContentWrapper>
+      </GameWrapper>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
-  position: relative;
-  background: rgb(227, 216, 200);
-  width: auto;
-  height: 100vh;
+const ImgFilter = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgb(0, 0, 0, 0.3);
+  z-index: -1;
 `;
 
-const StatsWrapper = styled.div`
-  position: absolute;
-  left: 20px;
-  top: 50px;
+const GameWrapper = styled.div`
+  width: 90%;
+  margin-left: 5%;
+  background: rgb(255, 255, 255, 0.3);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3%;
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  background: ${({ bgImg }) => `url(${bgImg})`};
+  background-size: cover;
+  width: auto;
+  height: 100vh;
+  z-index: 2;
+`;
+
+const TripStats = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid black;
+  padding: 5px 0;
+  text-shadow: 0 0 5px black;
+  color: white;
+`;
+
+const GameStats = styled.div`
+  border: 2px solid black;
+  background: rgb(94, 73, 58);
+  border-radius: 2px;
+  width: 500px;
+  display: flex;
   flex-direction: column;
+  padding-bottom: 30px;
 `;
 
 const StatsItem = styled.div`
@@ -168,33 +214,28 @@ const StatsItem = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background: rgb(227, 216, 100, 0.3);
-  border-radius: 2px;
-  padding: 30px;
-  border: 1px solid gray;
-  position: absolute;
-  transition: 0.3s ease-in-out;
-  max-width: 700px;
-  top: 30%;
 `;
 
 const NewCardButton = styled.button`
-  padding: 10px 20px;
-  margin-top: 10px;
-  background: rgb(209, 208, 207);
+  background: ${({ bgImg }) => `url(${bgImg})`};
+  background-size: 100% 100%;
+  padding: 20px 30px;
+  background-repeat: no-repeat;
   border-radius: 2px;
+  text-align: center;
+  color: white;
+  font-size: 19px;
+  text-shadow: 0 0 9px black;
   cursor: pointer;
   border: none;
   outline: none;
   transition: 0.4s ease-in-out;
   &:hover {
-    background: white;
+    transform: scale(1.1) translate(0, -10px);
   }
   &:active {
-    transform: scale(0.95);
+    transform: scale(0.9) translate(0, 0px);
   }
 `;
 

@@ -6,6 +6,7 @@ const { MONGO_URI } = process.env;
 
 const { randomPirateName } = require("./helpers/randomCaptainName");
 const { randomBoatName } = require(`./helpers/randomBoatName`);
+const { randomPirateImage } = require("./helpers/randomPirateImg");
 const { updateStats } = require("./helpers/updateStats");
 
 const options = {
@@ -122,41 +123,45 @@ const ManageCrewMates = async (req, res) => {
 
   try {
     const db = client.db("Pirate-Looter");
+
+    const user = await db.collection("users").findOne({ _id });
+    const alivePirate = user.pirates.filter((pirate) => !pirate.isDead)[0];
     let query;
     let newValue;
     let options;
     let message;
     switch (action) {
       case "adding": {
-        newValue = { $addToSet: { "pirates.$[pirateId].boat.crew": crewMate } };
+        crewMate.img = randomPirateImage();
+        crewMate._id = uuidv4();
+        newValue = {
+          $set: {
+            "pirates.$[pirateId].totalMoral":
+              Number(alivePirate.totalMoral) + Number(crewMate.moral),
+            "pirates.$[pirateId].totalEnergy":
+              Number(alivePirate.totalEnergy) + Number(crewMate.energy),
+          },
+          $addToSet: { "pirates.$[pirateId].boat.crew": crewMate },
+        };
         options = { arrayFilters: [{ "pirateId.isDead": false }] };
         query = { _id };
         message = `added ${crewMate.name} to the Crew!`;
+
         break;
       }
       case "removing": {
         newValue = {
-          $pull: { "pirates.$[pirateId].boat.crew": { name: crewMate } },
+          $set: {
+            "pirates.$[pirateId].totalMoral":
+              Number(alivePirate.totalMoral) - Number(crewMate.moral),
+            "pirates.$[pirateId].totalEnergy":
+              Number(alivePirate.totalEnergy) - Number(crewMate.energy),
+          },
+          $pull: { "pirates.$[pirateId].boat.crew": { ...crewMate } },
         };
         options = { arrayFilters: [{ "pirateId.isDead": false }] };
+        message = `removed ${crewMate.name} from the Crew!`;
         query = { _id };
-
-        break;
-      }
-      case "stat-change": {
-        // BAD CODE. BREAKS THE CREW ARRAY
-        // newValue = {
-        //   $set: {
-        //     "pirates.$[pirateId].boat.crew": [{ energy: crewMate.energy }],
-        //   },
-        // };
-        // options = {
-        //   arrayFilters: [{ "pirateId.isDead": false }],
-        // };
-        // query = {
-        //   _id,
-        //   "pirates.pirateId": pirateId,
-        // };
 
         break;
       }
@@ -165,15 +170,46 @@ const ManageCrewMates = async (req, res) => {
     const result = await db
       .collection("users")
       .updateOne(query, newValue, options);
-    console.log("MODIFIED ---", result.modifiedCount);
-    console.log("FOUND ---", result.matchedCount);
 
-    res.status(200).json({ status: 200, data: crewMate, message, result });
+    console.log("MODIFIED---", result.modifiedCount);
+
+    res.status(200).json({ status: 200, data: crewMate, message });
   } catch (err) {
     console.log("ERROR---", err);
   } finally {
     client.close();
     console.log("disconnected");
+  }
+};
+
+const RemoveDeadPirate = async (req, res) => {
+  const { _id, pirateId } = req.params;
+
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const query = { _id, "pirates.pirateId": pirateId };
+    const newValue = { $set: { "pirates.$.isDead": true } };
+
+    const db = client.db("Pirate-Looter");
+
+    const result = await db.collection("users").updateOne(query, newValue);
+
+    if (result.modifiedCount === 1) {
+      res
+        .status(202)
+        .json({ status: 202, message: "pirate is no longer alive" });
+    }
+  } catch (err) {
+    res.status(500).json({
+      status: 500,
+      message: "something happened internally",
+      error: err,
+    });
+  } finally {
+    client.close();
   }
 };
 
@@ -291,6 +327,7 @@ module.exports = {
   AddNewPirate,
   ChangePirateStats,
   ManageCrewMates,
+  RemoveDeadPirate,
   AddTreasureMap,
   RemoveTreasureMap,
   UpdatePirateAfterWin,

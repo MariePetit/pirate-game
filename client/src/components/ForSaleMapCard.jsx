@@ -6,10 +6,13 @@ const ForSaleMapCard = ({
   map: { name, cost, tripLength, sold },
   userGold,
   handlePurchase,
+  bgImg,
+  isLoading,
 }) => {
   return (
     <Wrapper
-      disabled={userGold - cost > 0 ? false : true}
+      bgImg={bgImg}
+      disabled={!isLoading && userGold - cost > 0 ? false : true}
       onClick={() => {
         handlePurchase({ map });
       }}
@@ -28,10 +31,22 @@ const ForSaleMapCard = ({
 };
 
 const Wrapper = styled.button`
-  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin: 5px;
+  height: 120px;
   outline: none;
+  border: none;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
+  background: ${({ bgImg }) => `url(${bgImg})`};
+  background-size: 100% 100%;
+  opacity: ${({ disabled }) => (disabled ? "0.6" : "1")};
+
+  &:hover {
+    color: ${({ disabled }) => (disabled ? "default" : "green")};
+  }
 `;
 
 const Name = styled.div``;
@@ -40,6 +55,8 @@ const StatList = styled.ul`
   margin: 0;
   list-style-type: none;
 `;
-const Stat = styled.li``;
+const Stat = styled.li`
+  margin: 3px;
+`;
 
 export default ForSaleMapCard;

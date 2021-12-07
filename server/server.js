@@ -9,6 +9,7 @@ const {
   AddTreasureMap,
   RemoveTreasureMap,
   UpdatePirateAfterWin,
+  RemoveDeadPirate,
 } = require("./handlers/piratehandler");
 const {
   EditUserById,
@@ -53,13 +54,15 @@ express()
   //PATCH - change the pirate's stats
   .patch(`/pirate/stats/:_id/pirateId/:pirateId`, ChangePirateStats)
   //PATCH - adding/removing crew mates
-  .patch(`/pirate/newCrewMate/:_id/pirateId/:pirateId`, ManageCrewMates)
+  .patch(`/pirate/crewMate/:_id/`, ManageCrewMates)
 
   .patch(`/pirate/add/treasuremap/:_id/:pirateId`, AddTreasureMap)
 
   .patch(`/pirate/remove/treasuremap/:_id/:pirateId`, RemoveTreasureMap)
 
   .patch(`/pirate/winTripUpdate/:_id/:pirateId`, UpdatePirateAfterWin)
+
+  .patch(`/pirate/removeDeadPirate/:_id/:pirateId`, RemoveDeadPirate)
 
   .listen(PORT, () => {
     console.log(`listening on port ${PORT}`);

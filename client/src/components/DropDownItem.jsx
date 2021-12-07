@@ -9,7 +9,7 @@ const DropDownItem = ({ disabled, icon, title, link }) => {
       <StyledLink disabled={disabled} to={`/${disabled ? "" : link}`}>
         {icon ? (
           <>
-            {icon}
+            <span style={{ marginLeft: "10px" }}>{icon}</span>
             {title}
           </>
         ) : (
@@ -25,7 +25,8 @@ const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 20px;
   font-weight: bold;
   font-size: 20px;
   padding: 10px 0px;
