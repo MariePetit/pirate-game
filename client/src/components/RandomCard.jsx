@@ -23,6 +23,7 @@ const RandomCard = () => {
     setIsCursed,
     hasWon,
     setHasWon,
+    createCrewMate,
   } = useContext(StatsContext);
   const { eventCards, endCards } = useContext(CardContext);
 
@@ -61,6 +62,8 @@ const RandomCard = () => {
           name: "Burried Treasure!!",
           id: randomNum,
           description: `X marks the spot! You arrived at the burried treasure and found ${chosenMap.loot} gold!`,
+          image:
+            "https://nicolas-bucket-recipe-app-images.s3.us-east-2.amazonaws.com/Pirate-looter-icons/treasure.png",
           leftChoice: {
             energy: 0,
             gold: chosenMap.loot,
@@ -77,7 +80,7 @@ const RandomCard = () => {
           },
         });
       } else {
-        setSingleCard(eventCards[randomNum]);
+        setSingleCard(eventCards[14]);
       }
 
       if (singleCard.name) {

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
 import { checkIfLost } from "./checkIfLostFunction";
+import crewMateGenerator from "./CrewMate/crewMateGenerator";
 
 const initialState = {
   gold: 50,
@@ -16,6 +17,8 @@ export const StatsProvider = ({ children }) => {
   const [scurvy, setScurvy] = useState(false);
   const [hasWon, setHasWon] = useState(false);
   const [hasLost, setHasLost] = useState(false);
+  const [createCrewMate, setCreateCrewMate] = useState(false);
+  const [cursedMate, setCursedMate] = useState(null);
   const [showChanges, setShowChanges] = useState("none");
   const [state, setState] = useState(initialState);
   const [reasonForLost, setReasonForLost] = useState("");
@@ -29,6 +32,13 @@ export const StatsProvider = ({ children }) => {
       setReasonForLost(reason.toLocaleLowerCase());
     }
   }, [state]);
+
+  useEffect(() => {
+    if (createCrewMate) {
+      setCursedMate(crewMateGenerator());
+    }
+  }, [createCrewMate]);
+
   return (
     <StatsContext.Provider
       value={{
@@ -49,6 +59,10 @@ export const StatsProvider = ({ children }) => {
         setIsCursed,
         hasWon,
         setHasWon,
+        createCrewMate,
+        setCreateCrewMate,
+        cursedMate,
+        setCursedMate,
       }}
     >
       {children}

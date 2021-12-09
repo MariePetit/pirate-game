@@ -28,6 +28,7 @@ const Card = ({
     setIsCursed,
     hasWon,
     setHasWon,
+    setCreateCrewMate,
   } = useContext(StatsContext);
   const { alivePirate, setAlivePirate, user, update, setUpdate } =
     useContext(UserContext);
@@ -82,6 +83,7 @@ const Card = ({
         break;
       }
       case "curse": {
+        setCreateCrewMate(true);
         setIsCursed(true);
         break;
       }

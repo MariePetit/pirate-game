@@ -38,7 +38,13 @@ const CrewMate = ({ crewMate, update, setUpdate, user }) => {
         <>
           remove ?
           <ButtonWrapper>
-            <YesButton onClick={removeCrewMember}>Yes</YesButton>
+            <YesButton
+              onClick={() => {
+                removeCrewMember();
+              }}
+            >
+              Yes
+            </YesButton>
             <Button onClick={() => setRemove(false)}>No</Button>
           </ButtonWrapper>
         </>
@@ -70,7 +76,10 @@ const ImageWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
+  text-shadow: 2px 2px 9px black;
+  color: white;
   position: relative;
+  background: rgb(87, 41, 2);
   border: 2px solid rgb(138, 117, 100);
   padding: 5px;
 `;

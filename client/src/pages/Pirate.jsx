@@ -7,6 +7,7 @@ import { StatsContext } from "../components/StatsContext";
 import CrewMate from "../components/CrewMate";
 import OwnedMapCard from "../components/OwnedMapCard";
 import GoldAmountModal from "../modals/GoldAmountModal";
+import RescuedCrewMateModal from "../modals/RescuedCrewMateModal";
 import seaView from "../assets/seaView.jpg";
 
 import pirateImg from "../assets/023-pirate-21.png";
@@ -27,13 +28,25 @@ const Pirate = () => {
 
   const { user, alivePirate, setAlivePirate, setUpdate, update } =
     useContext(UserContext);
-  const { setState, setChosenMap } = useContext(StatsContext);
+  const { setState, setChosenMap, cursedMate } = useContext(StatsContext);
+
+  useEffect(() => {
+    console.log(cursedMate);
+    if (cursedMate) {
+      const modal = document.getElementById("RescuedCrewModal");
+      if (modal) {
+        modal.style.visibility = "visible";
+        modal.style.opacity = "1";
+      }
+    }
+  }, [cursedMate]);
 
   useEffect(() => {
     return () => {
       setUpdate(!update);
     };
   }, []);
+
   useEffect(() => {
     const delay = 1000;
     let moralHeal = 0;
@@ -98,6 +111,25 @@ const Pirate = () => {
     }
   }, [user, alivePirate]);
 
+  const addCrewMate = (crewMate) => {
+    fetch(`/pirate/crewMate/${user._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ action: "adding", crewMate }),
+    }).then(() => {
+      window.location.reload();
+      // commented out because it breaks the healing part.
+      // setUpdate(!update);
+      // const modal = document.getElementById("RescuedCrewModal");
+      // if (modal) {
+      //   modal.style.visibility = "hidden";
+      //   modal.style.opacity = "0";
+      // }
+    });
+  };
+
   const handleStartGame = (gold) => {
     setState({ ...totalStats, gold });
 
@@ -149,6 +181,17 @@ const Pirate = () => {
           _id={user._id}
           update={update}
           setUpdate={setUpdate}
+        />
+      )}
+      {cursedMate && (
+        <RescuedCrewMateModal
+          boatCrew={alivePirate.boat?.crew}
+          crewMaxSize={alivePirate.boat?.crewSize}
+          cursedMate={cursedMate}
+          onClick={addCrewMate}
+          update={update}
+          setUpdate={setUpdate}
+          user={user}
         />
       )}
       <Wrapper bgImage={seaView}>
@@ -235,7 +278,19 @@ const Pirate = () => {
                       <Rope />
                     </RopeWrapper>
                     <CrewWrapper>
-                      <Title>Crew</Title>
+                      <Title
+                        max={
+                          alivePirate.boat?.crewSize <=
+                          alivePirate.boat?.crew.length
+                        }
+                      >
+                        Crew
+                        <span>
+                          {" "}
+                          {alivePirate.boat?.crew.length} /{" "}
+                          {alivePirate.boat?.crewSize}
+                        </span>
+                      </Title>
                       <Crews>
                         {alivePirate.boat.crew.length > 0 &&
                           alivePirate.boat.crew.map((crewMate, index) => {
@@ -283,10 +338,16 @@ const Pirate = () => {
 };
 
 const Title = styled.div`
+  cursor: default;
   width: 100%;
   text-align: center;
   font-weight: bold;
   font-size: 20px;
+
+  span {
+    font-size: 12px;
+    color: ${({ max }) => (max ? "gray" : "white")};
+  }
 `;
 
 const LoadingWrapper = styled.div`
@@ -427,14 +488,17 @@ const Wrapper = styled.div`
 `;
 
 const Fade = styled.div`
+  width: 100%;
   height: 100%;
   background: rgb(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
 `;
 const PirateWrapper = styled.div`
+  max-width: 1100px;
   width: 90%;
   height: 100%;
   overflow: auto;
-  margin-left: 5%;
   padding: 2%;
   background: rgb(255, 255, 255, 0.4);
   border-left: 5px solid rgb(87, 41, 2);

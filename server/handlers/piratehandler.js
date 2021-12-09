@@ -6,7 +6,6 @@ const { MONGO_URI } = process.env;
 
 const { randomPirateName } = require("./helpers/randomCaptainName");
 const { randomBoatName } = require(`./helpers/randomBoatName`);
-const { randomPirateImage } = require("./helpers/randomPirateImg");
 const { updateStats } = require("./helpers/updateStats");
 
 const options = {
@@ -41,6 +40,8 @@ const AddNewPirate = async (req, res) => {
         boat: {
           boatName: boatName ? boatName : randomBoatName(),
           crew: [],
+          level: 1,
+          crewSize: 2,
           health: 75,
           totalHealth: 75,
           customizations: [],
@@ -132,7 +133,6 @@ const ManageCrewMates = async (req, res) => {
     let message;
     switch (action) {
       case "adding": {
-        crewMate.img = randomPirateImage();
         crewMate._id = uuidv4();
         newValue = {
           $set: {
