@@ -15,6 +15,7 @@ import Pirate from "./pages/Pirate";
 import DropDown from "./components/DropDown";
 import IntroPage from "./pages/IntroPage";
 import Graveyard from "./pages/Graveyard";
+import Game from "./pages/Game";
 
 const App = () => {
   return (
@@ -30,6 +31,9 @@ const App = () => {
           </Route>
           <Route exact path="/game">
             <RandomCard />
+          </Route>
+          <Route exact path="/newGame">
+            <Game />
           </Route>
           <Route exact path="/harbor">
             <DropDown />

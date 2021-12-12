@@ -5,7 +5,6 @@ export const checkIfLost = (state) => {
   const result = values.filter((value) => {
     return Math.sign(value) !== 1;
   });
-
   let reason = "";
 
   values.forEach((value, index) => {
@@ -15,5 +14,21 @@ export const checkIfLost = (state) => {
   });
   if (result.length > 0) {
     return reason;
+  }
+};
+
+export const newCheckIfLost = (statsState, choice) => {
+  let values = Object.values(statsState);
+  let keys = Object.keys(statsState);
+  keys = keys.filter((key) => typeof statsState[key] === "number");
+  values = values.filter((value) => typeof value === "number");
+
+  const result = keys.filter((key, index) => {
+    const check = values[index] + choice[key];
+    return Math.sign(check) !== 1;
+  });
+
+  if (result.length > 0) {
+    return result[0];
   }
 };

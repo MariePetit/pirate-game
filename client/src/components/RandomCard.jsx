@@ -80,7 +80,7 @@ const RandomCard = () => {
           },
         });
       } else {
-        setSingleCard(eventCards[14]);
+        setSingleCard(eventCards[randomNum]);
       }
 
       if (singleCard.name) {
