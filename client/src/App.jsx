@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 
-import RandomCard from "./components/RandomCard";
 import HomePage from "./pages/HomePage";
 import Signup from "./pages/Signup";
 import { GlobalStyle } from "./components/GlobalStyle";
@@ -30,9 +29,6 @@ const App = () => {
             <IntroPage />
           </Route>
           <Route exact path="/game">
-            <RandomCard />
-          </Route>
-          <Route exact path="/newGame">
             <Game />
           </Route>
           <Route exact path="/harbor">

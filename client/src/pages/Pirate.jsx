@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { UserContext } from "../components/UserContext";
-import { StatsContext } from "../components/StatsContext";
 import CrewMate from "../components/CrewMate";
 import OwnedMapCard from "../components/OwnedMapCard";
 import GoldAmountModal from "../modals/GoldAmountModal";
@@ -29,7 +28,6 @@ const Pirate = () => {
 
   const { user, alivePirate, setAlivePirate, setUpdate, update } =
     useContext(UserContext);
-  const { setState, setChosenMap, cursedMate } = useContext(StatsContext);
 
   const {
     gameState,
@@ -38,14 +36,14 @@ const Pirate = () => {
   } = useContext(GameContext);
 
   useEffect(() => {
-    if (cursedMate) {
+    if (gameState.crewMate) {
       const modal = document.getElementById("RescuedCrewModal");
       if (modal) {
         modal.style.visibility = "visible";
         modal.style.opacity = "1";
       }
     }
-  }, [cursedMate]);
+  }, [gameState.crewMate]);
 
   useEffect(() => {
     return () => {
@@ -118,6 +116,7 @@ const Pirate = () => {
   }, [user, alivePirate]);
 
   const addCrewMate = (crewMate) => {
+    console.log(crewMate);
     fetch(`/pirate/crewMate/${user._id}`, {
       method: "PATCH",
       headers: {
@@ -137,7 +136,6 @@ const Pirate = () => {
   };
 
   const handleStartGame = (gold) => {
-    setState({ ...totalStats, gold });
     receiveGameInfo({ data: { ...totalStats, gold }, statDispatch });
     let newStats = {
       ...totalStats,
@@ -154,7 +152,7 @@ const Pirate = () => {
       })
     );
 
-    history.push(`/newGame`);
+    history.push(`/game`);
   };
 
   const handleSetGoldAmount = (clickedMap) => {
@@ -163,7 +161,6 @@ const Pirate = () => {
     }
 
     receiveGameMap({ data: { map: clickedMap }, gameDispatch });
-    setChosenMap(clickedMap);
     const modal = document.getElementById("goldAmountModal");
     if (modal) {
       modal.style.visibility = "visible";
@@ -194,11 +191,11 @@ const Pirate = () => {
           setUpdate={setUpdate}
         />
       )}
-      {cursedMate && (
+      {gameState.crewMate && (
         <RescuedCrewMateModal
           boatCrew={alivePirate.boat?.crew}
           crewMaxSize={alivePirate.boat?.crewSize}
-          cursedMate={cursedMate}
+          cursedMate={gameState.crewMate}
           onClick={addCrewMate}
           update={update}
           setUpdate={setUpdate}
