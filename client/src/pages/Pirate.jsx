@@ -20,6 +20,7 @@ import FallOpen from "../animations/FallOpen";
 import CreatePirateModal from "../modals/CreatePirateModal";
 import treasureMapImg from "../assets/treasureMap.png";
 import { NotStyledButton } from "../buttons/NotStyledButton";
+import { GameContext } from "../components/Contexts/GameContext";
 
 const Pirate = () => {
   const history = useHistory();
@@ -30,8 +31,13 @@ const Pirate = () => {
     useContext(UserContext);
   const { setState, setChosenMap, cursedMate } = useContext(StatsContext);
 
+  const {
+    gameState,
+    actions: { receiveGameMap, receiveGameInfo, resetGame },
+    dispatches: { gameDispatch, statDispatch },
+  } = useContext(GameContext);
+
   useEffect(() => {
-    console.log(cursedMate);
     if (cursedMate) {
       const modal = document.getElementById("RescuedCrewModal");
       if (modal) {
@@ -132,7 +138,7 @@ const Pirate = () => {
 
   const handleStartGame = (gold) => {
     setState({ ...totalStats, gold });
-
+    receiveGameInfo({ data: { ...totalStats, gold }, statDispatch });
     let newStats = {
       ...totalStats,
       gold: alivePirate.gold - gold,
@@ -148,10 +154,15 @@ const Pirate = () => {
       })
     );
 
-    history.push(`/game`);
+    history.push(`/newGame`);
   };
 
   const handleSetGoldAmount = (clickedMap) => {
+    if (gameState.gameStarted) {
+      resetGame({ gameDispatch, statDispatch });
+    }
+
+    receiveGameMap({ data: { map: clickedMap }, gameDispatch });
     setChosenMap(clickedMap);
     const modal = document.getElementById("goldAmountModal");
     if (modal) {

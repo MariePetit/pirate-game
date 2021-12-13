@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { GameContext } from "../components/Contexts/GameContext";
@@ -6,47 +6,46 @@ import oceanBg from "../assets/oceanBackground.jpg";
 import treasureMapImg from "../assets/treasureMap.png";
 import NewCard from "../components/Game/NewCard";
 import { handleChoice } from "../helpers/gameHelpers";
+import NewStatDisplay from "../components/Game/NewStatDisplay";
 
 const Game = () => {
-  const [showChanges, setShowChanges] = useState("none");
   const {
-    gameState,
-    statsState,
+    gameState: { singleCard, tick, tripLength, gameStarted, chosenMap },
     actions: { startGame },
-    dispatches: { gameDispatch, statDispatch },
+    dispatches: { gameDispatch },
   } = useContext(GameContext);
 
   return (
     <Wrapper bgImg={oceanBg}>
       <ImgFilter />
       <GameWrapper>
-        {gameState.singleCard ? (
-          <NewCard
-            handleChoice={handleChoice}
-            setShowChanges={setShowChanges}
-            card={gameState.singleCard}
-          />
+        {gameStarted ? (
+          <>
+            <ContentWrapper>
+              <NewCard
+                handleChoice={handleChoice}
+                card={singleCard}
+                chosenMap={chosenMap}
+              />
+            </ContentWrapper>
+            <GameStats>
+              <TripStats>
+                <StatsItem>Day: {tick}</StatsItem>
+                <StatsItem>Trip day's left: {tripLength - tick}</StatsItem>
+              </TripStats>
+              <NewStatDisplay color="rgb(201, 133, 44)" type="Gold" />
+              <NewStatDisplay color="rgb(69, 133, 111)" type="Moral" />
+              <NewStatDisplay color="rgb(148, 17, 3)" type="Health" />
+              <NewStatDisplay color="rgb(186, 180, 0)" type="Energy" />
+            </GameStats>
+          </>
         ) : (
           <NewCardButton
             bgImg={treasureMapImg}
             onClick={() => {
-              //here is all the things we'll need to start the game hard coded
+              // toggling gameStarted to true
               startGame({
-                data: {
-                  map: {
-                    loot: 200,
-                    tripLength: 5,
-                    _id: "124fwsf1qe614",
-                    cost: 31,
-                    sold: 13,
-                    name: "level 1 treasure map",
-                  },
-                  moral: 100,
-                  energy: 100,
-                  health: 75,
-                },
                 gameDispatch,
-                statDispatch,
               });
             }}
           >
@@ -84,6 +83,38 @@ const GameWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 3%;
+`;
+
+const GameStats = styled.div`
+  border: 2px solid black;
+  background: rgb(94, 73, 58);
+  border-radius: 2px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+`;
+
+const StatsItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const TripStats = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid black;
+  padding: 5px 0;
+  text-shadow: 0 0 5px black;
+  color: white;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const NewCardButton = styled.button`

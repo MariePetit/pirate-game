@@ -12,7 +12,6 @@ const NewCard = ({ card, handleChoice, chosenMap }) => {
     gameState,
     statsState,
     actions,
-    actions: { receiveHoverOver, receiveChangedStats },
     dispatches: { gameDispatch, statDispatch },
   } = useContext(GameContext);
   const { user, alivePirate, update, setUpdate } = useContext(UserContext);
@@ -62,12 +61,18 @@ const NewCard = ({ card, handleChoice, chosenMap }) => {
         <Choice
           style={{ marginRight: "5px" }}
           id="leftButton"
-          // onMouseOut={() => {
-          //   receiveHoverOver({ data: { hoverOver: "none" }, statDispatch });
-          // }}
-          // onMouseOver={() => {
-          //   receiveHoverOver({ data: { hoverOver: "left" }, statDispatch });
-          // }}
+          onMouseOut={() => {
+            actions.receiveHoverOver({
+              data: { hoverOver: "none" },
+              statDispatch,
+            });
+          }}
+          onMouseOver={() => {
+            actions.receiveHoverOver({
+              data: { hoverOver: "left" },
+              statDispatch,
+            });
+          }}
           onClick={() => {
             handleClick(leftChoice);
           }}
@@ -77,12 +82,18 @@ const NewCard = ({ card, handleChoice, chosenMap }) => {
         <Choice
           style={{ marginLeft: "5px" }}
           id="rightButton"
-          // onMouseOut={() => {
-          //   receiveHoverOver({ data: { hoverOver: "none" }, statDispatch });
-          // }}
-          // onMouseOver={() => {
-          //   receiveHoverOver({ data: { hoverOver: "right" }, statDispatch });
-          // }}
+          onMouseOut={() => {
+            actions.receiveHoverOver({
+              data: { hoverOver: "none" },
+              statDispatch,
+            });
+          }}
+          onMouseOver={() => {
+            actions.receiveHoverOver({
+              data: { hoverOver: "right" },
+              statDispatch,
+            });
+          }}
           onClick={() => {
             handleClick(rightChoice);
           }}

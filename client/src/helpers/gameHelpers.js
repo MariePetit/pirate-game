@@ -12,16 +12,6 @@ export const handleChoice = (
   const { scurvy, cursed, hasWon, hasLost } = statsState;
   const { tick, tripLength, loot, mapId } = gameState;
 
-  if (hasWon || hasLost) {
-    actions.exitGame({
-      //need to change this to reset game to original values.
-      data: { pushTo: hasWon ? "pirate" : "graveyard" },
-      gameDispatch,
-      statDispatch,
-    });
-    return;
-  }
-
   if (scurvy) {
     actions.receiveChangedStats({
       data: { health: -10, energy: 0, moral: 0, gold: 0 },

@@ -9,13 +9,19 @@ export const gameReducer = (gameState, action) => {
         eventCards: action.eventCards,
         endCards: action.endCards,
       };
-    case "start-game":
+    case "receive-game-map":
       return {
         ...gameState,
         tripLength: action.map.tripLength,
         tick: 0,
         loot: action.map.loot,
         mapId: action.map._id,
+        chosenMap: action.map,
+      };
+    case "start-game":
+      return {
+        ...gameState,
+        gameStarted: true,
         singleCard: getRandomCard(gameState.eventCards),
       };
     case "change-card":
@@ -30,7 +36,6 @@ export const gameReducer = (gameState, action) => {
         singleCard: getRandomCard(gameState.singleCard.secondAction.items),
       };
     case "set-card-to-treasure":
-      console.log(action);
       return {
         ...gameState,
         singleCard: action.treasureCard,
@@ -42,7 +47,6 @@ export const gameReducer = (gameState, action) => {
         singleCard: getEndCard(gameState.endCards, action.winType),
       };
     case "lost-game":
-      console.log(action);
       return {
         ...gameState,
         singleCard: getEndCard(gameState.endCards, action.lostType),
@@ -52,10 +56,11 @@ export const gameReducer = (gameState, action) => {
         ...gameState,
         crewMate: crewMateGenerator(),
       };
-    case "exit-game":
+    case "reset-game":
       return {
-        ...gameState,
-        pushTo: action.pushTo,
+        ...initialGameState,
+        eventCards: gameState.eventCards,
+        endCards: gameState.endCards,
       };
     default:
       return gameState;
@@ -63,16 +68,12 @@ export const gameReducer = (gameState, action) => {
 };
 export const statReducer = (statsState, action) => {
   switch (action.type) {
-    case "start-game":
+    case "receive-game-info":
       return {
         ...statsState,
         moral: action.moral,
         energy: action.energy,
         health: action.health,
-      };
-    case "set-game-gold":
-      return {
-        ...statsState,
         gold: action.gold,
       };
     case "receive-hover-over":
@@ -108,13 +109,17 @@ export const statReducer = (statsState, action) => {
         ...statsState,
         cursed: action.cursed,
       };
-
+    case "reset-game":
+      return {
+        ...initialStatsState,
+      };
     default:
       return statsState;
   }
 };
 
 export const initialGameState = {
+  gameStarted: false,
   eventCards: null,
   endCards: null,
   tripLength: null,
@@ -124,13 +129,14 @@ export const initialGameState = {
   crewMate: false,
   loot: null,
   pushTo: null,
+  chosenMap: null,
 };
 export const initialStatsState = {
   scurvy: false,
   cursed: false,
   hasWon: false,
   hasLost: false,
-  gold: 100,
+  gold: null,
   moral: null,
   health: null,
   energy: null,

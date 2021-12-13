@@ -6,23 +6,26 @@ const receiveCards = ({ data, gameDispatch, statDispatch }) => {
   });
 };
 
-//expected keys { map , moral , health , energy }
-const startGame = ({ data, gameDispatch, statDispatch }) => {
+//expected keys { map }
+const receiveGameMap = ({ data, gameDispatch, statDispatch }) => {
   gameDispatch({
-    type: "start-game",
-    ...data,
-  });
-  statDispatch({
-    type: "start-game",
+    type: "receive-game-map",
     ...data,
   });
 };
 
-//expected keys { gold }
-const setGameGold = ({ data, gameDispatch, statDispatch }) => {
+//expected keys { map , moral , health , energy, gold }
+const receiveGameInfo = ({ data, gameDispatch, statDispatch }) => {
   statDispatch({
-    type: "set-game-gold",
+    type: "receive-game-info",
     ...data,
+  });
+};
+
+// no data needed
+const startGame = ({ gameDispatch, statDispatch }) => {
+  gameDispatch({
+    type: "start-game",
   });
 };
 
@@ -109,18 +112,19 @@ const foundCrewMate = ({ gameDispatch, statDispatch }) => {
   });
 };
 
-//expected keys { pushTo }
-const exitGame = ({ data, gameDispatch, statDispatch }) => {
+// no data needed
+const resetGame = ({ gameDispatch, statDispatch }) => {
   gameDispatch({
-    type: "exit-game",
-    ...data,
+    type: "reset-game",
+  });
+  statDispatch({
+    type: "reset-game",
   });
 };
 
 export const actions = {
   receiveCards,
   startGame,
-  setGameGold,
   receiveHoverOver,
   receiveChangedStats,
   changeCard,
@@ -131,5 +135,7 @@ export const actions = {
   scurvyToggle,
   curseToggle,
   foundCrewMate,
-  exitGame,
+  resetGame,
+  receiveGameInfo,
+  receiveGameMap,
 };
