@@ -5,7 +5,7 @@ import { GameContext } from "../components/Contexts/GameContext";
 import oceanBg from "../assets/oceanBackground.jpg";
 import treasureMapImg from "../assets/treasureMap.png";
 import NewCard from "../components/Game/NewCard";
-import { handleChoice } from "../helpers/gameHelpers";
+import { handleChoice } from "../components/Game/gameHelpers";
 import NewStatDisplay from "../components/Game/NewStatDisplay";
 
 const Game = () => {

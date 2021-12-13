@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { GameContext } from "../Contexts/GameContext";
 import { udpatePirateAfterLoss } from "../updatePirateAfterLoss";
 import { updatePirateAfterWin } from "../updatePirateAfterWin";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../Contexts/UserContext";
 
 const NewCard = ({ card, handleChoice, chosenMap }) => {
   const {
