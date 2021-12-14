@@ -130,6 +130,8 @@ const CreateUser = async (req, res) => {
       boat: {
         boatName: req.body.boatName ? req.body.boatName : randomBoatName(),
         crew: [],
+        level: 1,
+        crewSize: 2,
         health: 75,
         totalHealth: 75,
         customizations: [],

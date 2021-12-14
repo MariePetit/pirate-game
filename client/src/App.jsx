@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 
-import RandomCard from "./components/RandomCard";
 import HomePage from "./pages/HomePage";
 import Signup from "./pages/Signup";
 import { GlobalStyle } from "./components/GlobalStyle";
@@ -15,6 +14,7 @@ import Pirate from "./pages/Pirate";
 import DropDown from "./components/DropDown";
 import IntroPage from "./pages/IntroPage";
 import Graveyard from "./pages/Graveyard";
+import Game from "./pages/Game";
 
 const App = () => {
   return (
@@ -29,7 +29,7 @@ const App = () => {
             <IntroPage />
           </Route>
           <Route exact path="/game">
-            <RandomCard />
+            <Game />
           </Route>
           <Route exact path="/harbor">
             <DropDown />

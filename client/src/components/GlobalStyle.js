@@ -20,8 +20,22 @@ span {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   font-family: 'ABeeZee';
-
+  cursor:default;
   
+}
+
+button{
+  cursor:pointer;
+  *{
+    cursor:pointer;
+  }
+
+  &:hover:disabled{
+    cursor:default;
+    *{
+    cursor:default;
+  }
+  }
 }
 
 /* Works on Chrome, Edge, and Safari */
