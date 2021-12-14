@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "../components/Contexts/UserContext";
 import MapSeller from "../components/Harbor/MapSeller";
 import SlideInFromRight from "../animations/SlideInFromRight";
 

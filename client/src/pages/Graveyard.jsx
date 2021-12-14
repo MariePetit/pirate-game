@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "../components/Contexts/UserContext";
 
 const Graveyard = () => {
   const [deadPirates, setDeadPirates] = useState([]);

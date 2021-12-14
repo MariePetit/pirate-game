@@ -31,12 +31,6 @@ export const GameProvider = ({ children }) => {
     });
   }, []);
 
-  // console.log(gameState);
-  // console.log("gameStarted :", gameState.gameStarted);
-  // console.log("health", statsState.health);
-  // console.log("energy", statsState.energy);
-  // console.log("gold", statsState.gold);
-  // console.log("moral", statsState.moral);
   return (
     <GameContext.Provider
       value={{

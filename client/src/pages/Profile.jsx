@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "../components/Contexts/UserContext";
 import UserEdit from "../components/settingComponents/UserEdit";
 
 const Profile = () => {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { CircularProgress } from "@material-ui/core";
 
 import ForSaleMapCard from "../ForSaleMapCard";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../Contexts/UserContext";
 
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";

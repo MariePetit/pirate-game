@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { GameContext } from "../Contexts/GameContext";
 import GrowIn from "../../animations/GrowIn";
 
-const NewStatDisplay = ({ type, color }) => {
+const StatDisplay = ({ type, color }) => {
   const {
     gameState: {
       singleCard: { leftChoice, rightChoice },
@@ -61,11 +61,11 @@ const Stat = styled.div`
 
 const HoverChange = styled.div`
   position: absolute;
-  right: -25px;
+  left: 100%;
   transform: translate(0, -50%);
   z-index: 10000;
-  width: ${({ size }) => (size >= 30 ? "20px" : `${size}px`)};
-  height: ${({ size }) => (size >= 30 ? "20px" : `${size}px`)};
+  width: ${({ size }) => (size >= 40 ? "20px" : `${size}px`)};
+  height: ${({ size }) => (size >= 40 ? "20px" : `${size}px`)};
   border-radius: 50px;
   margin-left: 10px;
   box-shadow: 0 0 3px black;
@@ -73,4 +73,4 @@ const HoverChange = styled.div`
     !isNaN(color) && color === 1 ? "#3f8531" : "#a84032"};
 `;
 
-export default NewStatDisplay;
+export default StatDisplay;

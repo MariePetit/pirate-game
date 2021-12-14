@@ -1,4 +1,4 @@
-import { getEndCard, getRandomCard } from "../../helpers/gameHelpers";
+import { getEndCard, getRandomCard } from "../Game/gameHelpers";
 import crewMateGenerator from "../CrewMate/crewMateGenerator";
 
 export const gameReducer = (gameState, action) => {

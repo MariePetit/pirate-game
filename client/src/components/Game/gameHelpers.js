@@ -1,5 +1,6 @@
-import { newCheckIfLost } from "../components/checkIfLostFunction";
+import { newCheckIfLost } from "./checkIfLostFunction";
 
+// this fires everytime the user clicks on a choice while in the game.
 export const handleChoice = (
   choice,
   actions,
@@ -9,15 +10,19 @@ export const handleChoice = (
   statDispatch
 ) => {
   const { energy, health, moral, gold } = choice;
-  const { scurvy, cursed, hasWon, hasLost } = statsState;
+  const { scurvy, cursed } = statsState;
   const { tick, tripLength, loot, mapId } = gameState;
 
+  // if the player has scurvy, removes some health and the function
+  // CONTINUES
   if (scurvy) {
     actions.receiveChangedStats({
       data: { health: -10, energy: 0, moral: 0, gold: 0 },
       statDispatch,
     });
   }
+  // if the player is cursed, removes some moral and the function
+  // CONTINUES
   if (cursed) {
     actions.receiveChangedStats({
       data: { health: 0, energy: 0, moral: -5, gold: 0 },
@@ -25,8 +30,10 @@ export const handleChoice = (
     });
   }
 
+  // if the choice has a second action it will fire and set the card to this second action
+  // without increasing the amount of days.
+  // EXITS
   if (choice.useSecondAction) {
-    console.log("second action");
     actions.receiveSecondAction({ gameDispatch });
     actions.receiveChangedStats({
       data: { energy, health, moral, gold },
@@ -34,6 +41,10 @@ export const handleChoice = (
     });
     return;
   }
+
+  // checks if any of the stats go to 0 or below and sets the death reason
+  // to what ever stat did it.
+  // EXITS
   if (newCheckIfLost(statsState, choice)) {
     actions.receiveChangedStats({
       data: { energy, health, moral, gold },
@@ -47,6 +58,8 @@ export const handleChoice = (
     return;
   }
 
+  // win function. If the tick is equal to the length it means the player has won.
+  // EXITS
   if (tick === tripLength) {
     actions.receiveChangedStats({
       data: { energy, health, moral, gold },
@@ -55,6 +68,10 @@ export const handleChoice = (
     actions.winGame({ gameDispatch, statDispatch });
     return;
   }
+
+  // treasure function. If the tick is at half the trip length it means they arrived at the treasure.
+  //sets the next card to the treasureCard
+  // EXITS
   if (tick === Math.floor(tripLength / 2)) {
     actions.setCardToTreasure({
       data: { treasureCard: TreasureMapAdapter(loot, mapId) },
@@ -66,6 +83,10 @@ export const handleChoice = (
     });
     return;
   }
+
+  // switch state that checks if that card removes or add any handicap.
+  // applies all the necesarry damage and changes the card
+  // EXITS
   switch (choice.type) {
     case "scurvy":
       actions.scurvyToggle({ data: { scurvy: true }, statDispatch });
@@ -104,10 +125,13 @@ export const handleChoice = (
       break;
   }
 
+  // endcase where if nothing was triggered simply changes the stats and
+  // changes the card.
   actions.receiveChangedStats({
     data: { energy, health, moral, gold },
     statDispatch,
   });
+  //changeCard function increases tick by 1
   actions.changeCard({ gameDispatch });
 };
 
