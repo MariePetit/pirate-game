@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "../components/Contexts/UserContext";
 import { formInfoNeeded } from "../components/formInfoNeeded";
 import FormHelper from "../components/FormHelper";
 import {

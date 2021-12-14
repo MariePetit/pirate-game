@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "../components/Contexts/UserContext";
 import CrewMate from "../components/CrewMate";
 import OwnedMapCard from "../components/OwnedMapCard";
 import GoldAmountModal from "../modals/GoldAmountModal";

@@ -7,7 +7,7 @@ import { udpatePirateAfterLoss } from "../updatePirateAfterLoss";
 import { updatePirateAfterWin } from "../updatePirateAfterWin";
 import { UserContext } from "../Contexts/UserContext";
 
-const NewCard = ({ card, handleChoice, chosenMap }) => {
+const Card = ({ card, handleChoice, chosenMap }) => {
   const {
     gameState,
     statsState,
@@ -179,4 +179,4 @@ const Choice = styled.button`
   }
 `;
 
-export default NewCard;
+export default Card;

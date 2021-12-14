@@ -11,7 +11,7 @@ import {
 } from "react-icons/gi";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { BsFillGearFill, BsInfoSquareFill } from "react-icons/bs";
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "../components/Contexts/UserContext";
 
 const HomePage = () => {
   const size = 20;

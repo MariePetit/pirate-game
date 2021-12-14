@@ -4,9 +4,9 @@ import styled from "styled-components";
 import { GameContext } from "../components/Contexts/GameContext";
 import oceanBg from "../assets/oceanBackground.jpg";
 import treasureMapImg from "../assets/treasureMap.png";
-import NewCard from "../components/Game/NewCard";
+import Card from "../components/Game/Card";
 import { handleChoice } from "../components/Game/gameHelpers";
-import NewStatDisplay from "../components/Game/NewStatDisplay";
+import StatDisplay from "../components/Game/StatDisplay";
 
 const Game = () => {
   const {
@@ -22,7 +22,7 @@ const Game = () => {
         {gameStarted ? (
           <>
             <ContentWrapper>
-              <NewCard
+              <Card
                 handleChoice={handleChoice}
                 card={singleCard}
                 chosenMap={chosenMap}
@@ -33,10 +33,10 @@ const Game = () => {
                 <StatsItem>Day: {tick}</StatsItem>
                 <StatsItem>Trip day's left: {tripLength - tick}</StatsItem>
               </TripStats>
-              <NewStatDisplay color="rgb(201, 133, 44)" type="Gold" />
-              <NewStatDisplay color="rgb(69, 133, 111)" type="Moral" />
-              <NewStatDisplay color="rgb(148, 17, 3)" type="Health" />
-              <NewStatDisplay color="rgb(186, 180, 0)" type="Energy" />
+              <StatDisplay color="rgb(201, 133, 44)" type="Gold" />
+              <StatDisplay color="rgb(69, 133, 111)" type="Moral" />
+              <StatDisplay color="rgb(148, 17, 3)" type="Health" />
+              <StatDisplay color="rgb(186, 180, 0)" type="Energy" />
             </GameStats>
           </>
         ) : (
