@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { GameContext } from "../components/Contexts/GameContext";
@@ -7,13 +7,26 @@ import treasureMapImg from "../assets/treasureMap.png";
 import Card from "../components/Game/Card";
 import { handleChoice } from "../components/Game/gameHelpers";
 import StatDisplay from "../components/Game/StatDisplay";
+import CardEffect from "../animations/CardEffect";
+import Deck from "../components/Game/Deck";
 
 const Game = () => {
+  const [showCard, setShowCard] = useState(true);
+
   const {
     gameState: { singleCard, tick, tripLength, gameStarted, chosenMap },
+    statsState: { hasWon },
     actions: { startGame },
     dispatches: { gameDispatch },
   } = useContext(GameContext);
+
+  useEffect(() => {
+    if (!showCard) {
+      setTimeout(() => {
+        setShowCard(true);
+      }, 690);
+    }
+  }, [singleCard, showCard]);
 
   return (
     <Wrapper bgImg={oceanBg}>
@@ -23,15 +36,22 @@ const Game = () => {
           <>
             <ContentWrapper>
               <Card
+                showCard={showCard}
+                setShowCard={setShowCard}
                 handleChoice={handleChoice}
                 card={singleCard}
                 chosenMap={chosenMap}
               />
+              <Deck amount={tripLength - tick + 1} gameStarted={gameStarted} />
             </ContentWrapper>
             <GameStats>
               <TripStats>
                 <StatsItem>Day: {tick}</StatsItem>
-                <StatsItem>Trip day's left: {tripLength - tick}</StatsItem>
+                <StatsItem>
+                  {hasWon
+                    ? `Arriving home...`
+                    : `Trip day's left: ${tripLength - tick}`}
+                </StatsItem>
               </TripStats>
               <StatDisplay color="rgb(201, 133, 44)" type="Gold" />
               <StatDisplay color="rgb(69, 133, 111)" type="Moral" />
@@ -75,6 +95,7 @@ const ImgFilter = styled.div`
 `;
 
 const GameWrapper = styled.div`
+  overflow: hidden;
   width: 90%;
   margin-left: 5%;
   background: rgb(255, 255, 255, 0.3);
@@ -113,8 +134,7 @@ const TripStats = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  position: relative;
 `;
 
 const NewCardButton = styled.button`

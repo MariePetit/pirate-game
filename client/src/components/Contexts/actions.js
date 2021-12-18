@@ -89,6 +89,17 @@ const lostGame = ({ data, gameDispatch, statDispatch }) => {
   });
 };
 
+const retreatFromGame = ({ data, gameDispatch, statDispatch }) => {
+  gameDispatch({
+    type: "retreat-from-game",
+    ...data,
+  });
+
+  statDispatch({
+    type: "retreat-from-game",
+    ...data,
+  });
+};
 //expected keys { scurvy }
 const scurvyToggle = ({ data, gameDispatch, statDispatch }) => {
   statDispatch({
@@ -132,6 +143,7 @@ export const actions = {
   setCardToTreasure,
   winGame,
   lostGame,
+  retreatFromGame,
   scurvyToggle,
   curseToggle,
   foundCrewMate,

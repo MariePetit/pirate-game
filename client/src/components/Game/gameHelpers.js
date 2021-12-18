@@ -30,6 +30,60 @@ export const handleChoice = (
     });
   }
 
+  // switch state that checks if that card removes or add any handicap.
+  // applies all the necesarry damage and changes the card
+  // EXITS
+  switch (choice.type) {
+    case "scurvy":
+      actions.scurvyToggle({ data: { scurvy: true }, statDispatch });
+      break;
+    case "oranges":
+      actions.scurvyToggle({ data: { scurvy: false }, statDispatch });
+      break;
+    case "curse":
+      actions.curseToggle({ data: { cursed: true }, statDispatch });
+      actions.foundCrewMate({ gameDispatch });
+      break;
+    case "devineSight":
+      actions.curseToggle({ data: { cursed: false }, statDispatch });
+      break;
+    default:
+      break;
+  }
+
+  // checks if any of the stats go to 0 or below and sets the death reason
+  // to what ever stat did it.
+  // EXITS
+  console.log(tick);
+  console.log(Math.floor(tripLength / 2));
+  console.log(tick <= Math.floor(tripLength / 2));
+
+  if (newCheckIfLost(statsState, choice, scurvy, cursed)) {
+    actions.receiveChangedStats({
+      data: { energy, health, moral, gold },
+      statDispatch,
+    });
+
+    if (tick <= Math.floor(tripLength / 2)) {
+      actions.retreatFromGame({
+        data: {
+          retreat: "retreat",
+          lowStat: newCheckIfLost(statsState, choice, scurvy, cursed),
+        },
+        gameDispatch,
+        statDispatch,
+      });
+    } else {
+      actions.lostGame({
+        data: { lostType: newCheckIfLost(statsState, choice, scurvy, cursed) },
+        gameDispatch,
+        statDispatch,
+      });
+    }
+
+    return;
+  }
+
   // if the choice has a second action it will fire and set the card to this second action
   // without increasing the amount of days.
   // EXITS
@@ -42,24 +96,9 @@ export const handleChoice = (
     return;
   }
 
-  // checks if any of the stats go to 0 or below and sets the death reason
-  // to what ever stat did it.
-  // EXITS
-  if (newCheckIfLost(statsState, choice)) {
-    actions.receiveChangedStats({
-      data: { energy, health, moral, gold },
-      statDispatch,
-    });
-    actions.lostGame({
-      data: { lostType: newCheckIfLost(statsState, choice) },
-      gameDispatch,
-      statDispatch,
-    });
-    return;
-  }
-
   // win function. If the tick is equal to the length it means the player has won.
   // EXITS
+
   if (tick === tripLength) {
     actions.receiveChangedStats({
       data: { energy, health, moral, gold },
@@ -84,47 +123,6 @@ export const handleChoice = (
     return;
   }
 
-  // switch state that checks if that card removes or add any handicap.
-  // applies all the necesarry damage and changes the card
-  // EXITS
-  switch (choice.type) {
-    case "scurvy":
-      actions.scurvyToggle({ data: { scurvy: true }, statDispatch });
-      actions.receiveChangedStats({
-        data: { energy, health, moral, gold },
-        statDispatch,
-      });
-      actions.changeCard({ gameDispatch });
-      return;
-    case "oranges":
-      actions.scurvyToggle({ data: { scurvy: false }, statDispatch });
-      actions.receiveChangedStats({
-        data: { energy, health, moral, gold },
-        statDispatch,
-      });
-      actions.changeCard({ gameDispatch });
-      return;
-    case "curse":
-      actions.curseToggle({ data: { cursed: true }, statDispatch });
-      actions.foundCrewMate({ gameDispatch });
-      actions.receiveChangedStats({
-        data: { energy, health, moral, gold },
-        statDispatch,
-      });
-      actions.changeCard({ gameDispatch });
-      return;
-    case "devineSight":
-      actions.curseToggle({ data: { cursed: false }, statDispatch });
-      actions.receiveChangedStats({
-        data: { energy, health, moral, gold },
-        statDispatch,
-      });
-      actions.changeCard({ gameDispatch });
-      return;
-    default:
-      break;
-  }
-
   // endcase where if nothing was triggered simply changes the stats and
   // changes the card.
   actions.receiveChangedStats({
@@ -139,8 +137,17 @@ export const getRandomCard = (cards) => {
   return cards[Math.floor(Math.random() * cards.length)];
 };
 
-export const getEndCard = (cards, type) => {
-  return cards.filter((card) => card.type === type)[0];
+export const getEndCard = (cards, type, lowStat) => {
+  if (lowStat) {
+    return cards
+      .filter((card) => card.type === type)
+      .map((card) => {
+        card.description = card.description.replace("_", lowStat);
+        return card;
+      })[0];
+  } else {
+    return cards.filter((card) => card.type === type)[0];
+  }
 };
 
 const TreasureMapAdapter = (loot, id) => {

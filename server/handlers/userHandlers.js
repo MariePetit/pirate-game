@@ -136,9 +136,10 @@ const CreateUser = async (req, res) => {
         totalHealth: 75,
         customizations: [],
       },
-      gold: 0,
+      gold: Math.round(Math.random() * 50 + 50),
       age: 0,
       isDead: false,
+      tutorials: { merchant: true, pirate: true, game: true },
     };
 
     pirates.push(pirate);
@@ -284,6 +285,35 @@ const getUserByLogin = async (req, res) => {
   }
 };
 
+const toggleTutorial = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  await client.connect();
+  console.log("connected");
+
+  try {
+    const { type, value } = req.body;
+    const { _id } = req.params;
+    const db = client.db("Pirate-Looter");
+
+    const results = await db
+      .collection("users")
+      .updateOne({ _id }, { $set: { [`tutorials.${type}`]: !value } });
+    results.modifiedCount > 0 &&
+      res
+        .status(200)
+        .json({ status: 200, message: `${type} was changed to ${!value}` });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: 400,
+      err,
+    });
+  } finally {
+    client.close();
+    console.log("disconnect");
+  }
+};
+
 module.exports = {
   EditUserById,
   CreateUser,
@@ -293,4 +323,5 @@ module.exports = {
   RealRemoveUser,
   AccountRecovery,
   getUserByLogin,
+  toggleTutorial,
 };

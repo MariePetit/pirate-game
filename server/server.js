@@ -20,6 +20,7 @@ const {
   RealRemoveUser,
   AccountRecovery,
   getUserByLogin,
+  toggleTutorial,
 } = require("./handlers/userHandlers");
 
 const PORT = 8000;
@@ -48,6 +49,8 @@ express()
   .patch(`/user/:_id`, EditUserById)
   //DELETE - real account deletion
   .delete(`/user/:_id/key/:key`, RealRemoveUser)
+
+  .patch(`/user/tutorial/:_id`, toggleTutorial)
 
   //PUT - adds a new pirate to the pirates array of that user
   .put(`/pirate/:_id`, AddNewPirate)

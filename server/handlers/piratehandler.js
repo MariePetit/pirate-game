@@ -46,7 +46,7 @@ const AddNewPirate = async (req, res) => {
           totalHealth: 75,
           customizations: [],
         },
-        gold: 0,
+        gold: Math.round(Math.random() * 50 + 50),
         age: 0,
         isDead: false,
       };

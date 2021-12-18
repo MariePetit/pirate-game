@@ -23,6 +23,7 @@ export const gameReducer = (gameState, action) => {
         ...gameState,
         gameStarted: true,
         singleCard: getRandomCard(gameState.eventCards),
+        crewMate: false,
       };
     case "change-card":
       return {
@@ -51,6 +52,16 @@ export const gameReducer = (gameState, action) => {
         ...gameState,
         singleCard: getEndCard(gameState.endCards, action.lostType),
       };
+    case "retreat-from-game":
+      return {
+        ...gameState,
+        crewMate: false,
+        singleCard: getEndCard(
+          gameState.endCards,
+          action.retreat,
+          action.lowStat
+        ),
+      };
     case "found-crew-mate":
       return {
         ...gameState,
@@ -61,6 +72,7 @@ export const gameReducer = (gameState, action) => {
         ...initialGameState,
         eventCards: gameState.eventCards,
         endCards: gameState.endCards,
+        crewMate: gameState.crewMate ? gameState.crewMate : false,
       };
     default:
       return gameState;
@@ -99,6 +111,11 @@ export const statReducer = (statsState, action) => {
         ...statsState,
         hasLost: true,
       };
+    case "retreat-from-game":
+      return {
+        ...statsState,
+        retreating: true,
+      };
     case "scurvy-toggle":
       return {
         ...statsState,
@@ -136,6 +153,7 @@ export const initialStatsState = {
   cursed: false,
   hasWon: false,
   hasLost: false,
+  retreating: false,
   gold: null,
   moral: null,
   health: null,
