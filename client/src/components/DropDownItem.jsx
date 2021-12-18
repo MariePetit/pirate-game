@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { TransitionContext } from "./Contexts/TransitionContext";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const DropDownItem = ({ disabled, icon, title, link }) => {
+  const history = useHistory();
+
   return (
     <Item>
-      <StyledLink disabled={disabled} to={`/${disabled ? "" : link}`}>
+      <StyledLink
+        onClick={() => {
+          history.push(`/${disabled ? "" : link}`);
+        }}
+        disabled={disabled}
+        to={`/${disabled ? "" : link}`}
+      >
         {icon ? (
           <>
             <span style={{ marginLeft: "10px" }}>{icon}</span>
@@ -20,7 +29,7 @@ const DropDownItem = ({ disabled, icon, title, link }) => {
   );
 };
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.button`
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   color: black;
   text-decoration: none;
@@ -29,6 +38,8 @@ const StyledLink = styled(Link)`
   gap: 20px;
   font-weight: bold;
   font-size: 20px;
+  outline: none;
+  border: none;
   padding: 10px 0px;
   width: 150px;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};

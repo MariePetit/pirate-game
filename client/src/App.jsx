@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 
@@ -16,11 +16,16 @@ import IntroPage from "./pages/IntroPage";
 import Graveyard from "./pages/Graveyard";
 import Game from "./pages/Game";
 
+import PageTransition from "./animations/PageTransition";
+import { TransitionContext } from "./components/Contexts/TransitionContext";
+
 const App = () => {
+  const { isShowing } = useContext(TransitionContext);
   return (
     <Wrapper>
       <GlobalStyle />
       <Router>
+        <PageTransition state={isShowing} />
         <Switch>
           <Route exact path="/">
             <HomePage />
@@ -71,6 +76,7 @@ const App = () => {
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 `;
 
 export default App;

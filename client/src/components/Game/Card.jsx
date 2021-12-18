@@ -3,11 +3,15 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { GameContext } from "../Contexts/GameContext";
-import { udpatePirateAfterLoss } from "../updatePirateAfterLoss";
-import { updatePirateAfterWin } from "../updatePirateAfterWin";
+import {
+  udpatePirateAfterLoss,
+  updatePirateAfterRetreat,
+  updatePirateAfterWin,
+} from "../updatePirateAfterGame";
 import { UserContext } from "../Contexts/UserContext";
+import CardEffect from "../../animations/CardEffect";
 
-const Card = ({ card, handleChoice, chosenMap }) => {
+const Card = ({ card, handleChoice, chosenMap, setShowCard, showCard }) => {
   const {
     gameState,
     statsState,
@@ -20,7 +24,7 @@ const Card = ({ card, handleChoice, chosenMap }) => {
   const history = useHistory();
 
   const handleClick = (clickedChoice) => {
-    if (statsState.hasWon || statsState.hasLost) {
+    if (statsState.hasWon || statsState.hasLost || statsState.retreating) {
       const state = {
         energy: statsState.energy,
         moral: statsState.moral,
@@ -37,9 +41,27 @@ const Card = ({ card, handleChoice, chosenMap }) => {
           update,
           setUpdate
         );
-      statsState.haslost &&
+      statsState.retreating &&
+        updatePirateAfterRetreat(
+          state,
+          gameState.tick,
+          chosenMap,
+          alivePirate,
+          user,
+          update,
+          setUpdate
+        );
+      statsState.hasLost &&
         udpatePirateAfterLoss(user, alivePirate, chosenMap, update, setUpdate);
-      history.push(`/${statsState.hasWon ? "pirate" : "graveyard"}`);
+      history.push(
+        `/${
+          statsState.hasWon
+            ? "pirate"
+            : statsState.hasLost
+            ? "graveyard"
+            : "pirate"
+        }`
+      );
     } else {
       handleChoice(
         clickedChoice,
@@ -53,7 +75,7 @@ const Card = ({ card, handleChoice, chosenMap }) => {
   };
 
   return (
-    <Wrapper>
+    <CardEffect state={showCard}>
       <CardTitle>{name}</CardTitle>
       <CardImg src={image} />
       <Description>{description}</Description>
@@ -74,7 +96,10 @@ const Card = ({ card, handleChoice, chosenMap }) => {
             });
           }}
           onClick={() => {
-            handleClick(leftChoice);
+            setShowCard(false);
+            setTimeout(() => {
+              handleClick(leftChoice);
+            }, 200);
           }}
         >
           {leftChoice.text}
@@ -95,17 +120,24 @@ const Card = ({ card, handleChoice, chosenMap }) => {
             });
           }}
           onClick={() => {
-            handleClick(rightChoice);
+            setShowCard(false);
+            setTimeout(() => {
+              handleClick(rightChoice);
+            }, 200);
           }}
         >
           {rightChoice.text}
         </Choice>
       </ChoiceWrapper>
-    </Wrapper>
+    </CardEffect>
   );
 };
 
 const Wrapper = styled.div`
+  position: absolute;
+  left: 0px;
+  top: -60px;
+  z-index: 2;
   background: rgb(222, 220, 217);
   border: 2px solid gray;
   border-radius: 2px;
@@ -113,8 +145,11 @@ const Wrapper = styled.div`
   margin-top: 20px;
   font-size: 18px;
   max-width: 300px;
+  height: 552px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  border-radius: 4px;
 `;
 
 const CardTitle = styled.div`
@@ -130,7 +165,6 @@ const CardTitle = styled.div`
 `;
 
 const CardImg = styled.img`
-  width: 100%;
   padding: 5%;
   border: 3px solid rgb(94, 73, 58);
   border-radius: 2px;
@@ -143,7 +177,6 @@ const Description = styled.div`
   margin-top: 10px;
   padding: 5px;
   text-align: start;
-  width: 100%;
   border-radius: 2px;
   border: 3px solid rgb(94, 73, 58);
   box-shadow: 0 0 10px 1px rgb(94, 73, 58) inset;

@@ -10,7 +10,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const newCard = [
+const multiActionNewCard = [
   {
     name: "Privateers",
     description:
@@ -102,6 +102,19 @@ const newCard = [
   },
 ];
 
+const newEndCard = [
+  {
+    name: "Retreating!",
+    type: "return",
+    description:
+      "Having run out of _ and being less than halfway there your crew manages to return back to harbor,costing you all the gold you brought on this escapade.",
+    leftChoice: "return at any cost!",
+    rightChoice: "return at any cost!",
+    image:
+      "https://nicolas-bucket-recipe-app-images.s3.us-east-2.amazonaws.com/Pirate-looter-icons/casualties.png",
+  },
+];
+
 const batchImport = async (batch, name) => {
   const client = new MongoClient(MONGO_URI, options);
 
@@ -120,4 +133,4 @@ const batchImport = async (batch, name) => {
   }
 };
 
-batchImport(newCard, "eventCards");
+batchImport(newEndCard, "endCards");

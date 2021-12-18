@@ -58,13 +58,13 @@ const Pirate = () => {
     let healthHeal = 0;
     if (alivePirate) {
       if (totalStats.energy < alivePirate.totalEnergy) {
-        energyHeal = 1;
+        energyHeal = 10;
       }
       if (totalStats.moral < alivePirate.totalMoral) {
-        moralHeal = 1;
+        moralHeal = 10;
       }
       if (totalStats.health < alivePirate.boat?.totalHealth) {
-        healthHeal = 1;
+        healthHeal = 10;
       }
 
       if (moralHeal > 0 || energyHeal > 0 || healthHeal > 0) {
@@ -323,7 +323,7 @@ const Pirate = () => {
               </PirateWrapper>
             )
           ) : (
-            <>
+            <PirateWrapper>
               <PageInfo>Pirate's Info</PageInfo>
               <FallOpen>
                 <RopeWrapper>
@@ -337,7 +337,7 @@ const Pirate = () => {
                   </ButtonWrapper>
                 </AddPirateWrapper>
               </FallOpen>
-            </>
+            </PirateWrapper>
           )}
         </Fade>
       </Wrapper>

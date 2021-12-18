@@ -17,14 +17,21 @@ export const checkIfLost = (state) => {
   }
 };
 
-export const newCheckIfLost = (statsState, choice) => {
+export const newCheckIfLost = (statsState, choice, scurvy, cursed) => {
   let values = Object.values(statsState);
   let keys = Object.keys(statsState);
   keys = keys.filter((key) => typeof statsState[key] === "number");
   values = values.filter((value) => typeof value === "number");
 
   const result = keys.filter((key, index) => {
-    const check = values[index] + choice[key];
+    let check;
+    if (key === "moral" && cursed) {
+      check = values[index] + choice[key] - 5;
+    } else if (key === "health" && scurvy) {
+      check = values[index] + choice[key] - 10;
+    } else {
+      check = values[index] + choice[key];
+    }
     return Math.sign(check) !== 1;
   });
 
